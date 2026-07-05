@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Supply Chain Delivery Performance Dashboard</title>
+  <style>
+    :root { --blue:#2F5F8F; --red:#B23A48; --green:#2E7D32; --amber:#C77D00; --ink:#252525; --muted:#667085; --bg:#F7F8FA; --line:#D9DEE7; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:Segoe UI, Arial, sans-serif; background:var(--bg); color:var(--ink); }
+    header { padding:28px 34px 18px; background:#fff; border-bottom:1px solid var(--line); }
+    h1 { margin:0 0 8px; font-size:28px; letter-spacing:0; }
+    h2 { margin:0 0 14px; font-size:20px; }
+    p { margin:0; color:var(--muted); line-height:1.45; }
+    main { padding:22px 34px 34px; max-width:1420px; margin:0 auto; }
+    .tabs { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:18px; }
+    .tabs button { border:1px solid var(--line); background:#fff; padding:10px 14px; border-radius:6px; cursor:pointer; font-weight:600; color:var(--ink); }
+    .tabs button.active { background:var(--blue); color:#fff; border-color:var(--blue); }
+    .section { display:none; }
+    .section.active { display:block; }
+    .kpis { display:grid; grid-template-columns:repeat(6,minmax(140px,1fr)); gap:12px; margin-bottom:18px; }
+    .card { background:#fff; border:1px solid var(--line); border-radius:8px; padding:14px; min-height:86px; }
+    .label { color:var(--muted); font-size:12px; text-transform:uppercase; font-weight:700; }
+    .value { font-size:24px; font-weight:750; margin-top:8px; }
+    .grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    .wide { grid-column:1 / -1; }
+    .panel { background:#fff; border:1px solid var(--line); border-radius:8px; padding:18px; }
+    .panel img { width:100%; height:auto; display:block; }
+    table { width:100%; border-collapse:collapse; font-size:13px; }
+    th, td { padding:9px 10px; border-bottom:1px solid #E6EAF0; text-align:left; }
+    th { color:#475467; background:#F3F5F8; font-size:12px; text-transform:uppercase; }
+    .note { margin-top:12px; font-size:13px; color:var(--muted); }
+    .risk { color:var(--red); }
+    @media (max-width:1000px) { .kpis { grid-template-columns:repeat(2,1fr); } .grid { grid-template-columns:1fr; } main, header { padding-left:18px; padding-right:18px; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Supply Chain Delivery Performance Dashboard</h1>
+    <p>Validated portfolio dashboard generated from Python and SQLite outputs. Metrics are grain-aware: commercial KPIs use order-item grain and delivery KPIs use distinct order grain.</p>
+  </header>
+  <main>
+    <nav class="tabs">
+      <button class="active" data-tab="overview">Executive Overview</button>
+      <button data-tab="delivery">Delivery & Logistics</button>
+      <button data-tab="commercial">Market & Commercial</button>
+      <button data-tab="diagnostic">Diagnostic Detail</button>
+    </nav>
+
+    <section id="overview" class="section active">
+      <div class="kpis">
+        <div class="card"><div class="label">Total Sales</div><div class="value">$33,054,402.4</div></div>
+        <div class="card"><div class="label">Total Profit</div><div class="value">$3,966,903.0</div></div>
+        <div class="card"><div class="label">Profit Margin</div><div class="value">12.0%</div></div>
+        <div class="card"><div class="label">Total Orders</div><div class="value">65,752</div></div>
+        <div class="card"><div class="label">Late Delivery Rate</div><div class="value risk">54.8%</div></div>
+        <div class="card"><div class="label">Avg Shipping Delay</div><div class="value">0.6 days</div></div>
+      </div>
+      <div class="grid">
+        <div class="panel wide"><h2>Monthly Sales And Late Delivery Trend</h2><img src="../reports/figures/monthly_sales_late_delivery_trend.svg" alt="Monthly sales and late delivery trend"></div>
+        <div class="panel"><h2>Market Order Volume</h2><img src="../reports/figures/market_order_volume.svg" alt="Market order volume"></div>
+        <div class="panel"><h2>Recent Monthly Performance</h2><table><thead><tr><th>Order Year Month</th><th>Total Orders</th><th>Total Sales Display</th><th>Late Delivery Rate Display</th></tr></thead><tbody><tr><td>2017-02</td><td>1614</td><td>$891,924</td><td>54.5%</td></tr><tr><td>2017-03</td><td>1782</td><td>$942,290</td><td>55.2%</td></tr><tr><td>2017-04</td><td>1739</td><td>$932,318</td><td>52.7%</td></tr><tr><td>2017-05</td><td>1763</td><td>$993,199</td><td>54.7%</td></tr><tr><td>2017-06</td><td>1676</td><td>$927,446</td><td>54.4%</td></tr><tr><td>2017-07</td><td>1776</td><td>$992,423</td><td>54.4%</td></tr><tr><td>2017-08</td><td>1768</td><td>$996,508</td><td>55.5%</td></tr><tr><td>2017-09</td><td>1723</td><td>$1,027,112</td><td>54.6%</td></tr><tr><td>2017-10</td><td>2101</td><td>$966,081</td><td>54.1%</td></tr><tr><td>2017-11</td><td>2055</td><td>$563,393</td><td>55.1%</td></tr><tr><td>2017-12</td><td>2124</td><td>$452,742</td><td>55.2%</td></tr><tr><td>2018-01</td><td>2123</td><td>$297,952</td><td>56.3%</td></tr></tbody></table></div>
+      </div>
+    </section>
+
+    <section id="delivery" class="section">
+      <div class="grid">
+        <div class="panel"><h2>Late Delivery Rate By Shipping Mode</h2><img src="../reports/figures/late_delivery_rate_by_shipping_mode.svg" alt="Late delivery rate by shipping mode"></div>
+        <div class="panel"><h2>Shipping Mode Performance</h2><table><thead><tr><th>Shipping Mode</th><th>Total Orders</th><th>Late Delivery Rate</th><th>Avg Delay Days</th><th>Total Sales</th></tr></thead><tbody><tr><td>First Class</td><td>10079</td><td>95.3%</td><td>1.0</td><td>$5,100,451</td></tr><tr><td>Second Class</td><td>12778</td><td>76.7%</td><td>2.0</td><td>$6,416,529</td></tr><tr><td>Same Day</td><td>3571</td><td>46.1%</td><td>0.48</td><td>$1,745,202</td></tr><tr><td>Standard Class</td><td>39324</td><td>38.1%</td><td>-0.0</td><td>$19,792,221</td></tr></tbody></table></div>
+        <div class="panel wide"><h2>High-Volume Regions With Highest Late Delivery Rates</h2><img src="../reports/figures/high_volume_regions_late_delivery.svg" alt="High volume regions late delivery"></div>
+        <div class="panel wide"><h2>Regional Risk Table</h2><table><thead><tr><th>Market</th><th>Order Region</th><th>Total Orders</th><th>Late Delivery Rate</th><th>Avg Delay Days</th><th>Total Sales</th></tr></thead><tbody><tr><td>Africa</td><td>Central Africa</td><td>556</td><td>57.6%</td><td>0.64</td><td>$292,913</td></tr><tr><td>Africa</td><td>East Africa</td><td>613</td><td>56.8%</td><td>0.59</td><td>$338,054</td></tr><tr><td>USCA</td><td>South of  USA</td><td>1345</td><td>56.0%</td><td>0.6</td><td>$706,904</td></tr><tr><td>Pacific Asia</td><td>West Asia</td><td>2022</td><td>56.0%</td><td>0.58</td><td>$1,056,081</td></tr><tr><td>Europe</td><td>Eastern Europe</td><td>1292</td><td>56.0%</td><td>0.59</td><td>$696,307</td></tr><tr><td>Pacific Asia</td><td>South Asia</td><td>3335</td><td>55.9%</td><td>0.6</td><td>$1,397,365</td></tr><tr><td>Europe</td><td>Western Europe</td><td>10010</td><td>55.8%</td><td>0.59</td><td>$5,296,003</td></tr><tr><td>Pacific Asia</td><td>Southeast Asia</td><td>4356</td><td>55.6%</td><td>0.58</td><td>$1,738,553</td></tr><tr><td>USCA</td><td>US Center</td><td>1935</td><td>55.3%</td><td>0.57</td><td>$1,034,129</td></tr><tr><td>USCA</td><td>East of USA</td><td>2323</td><td>54.9%</td><td>0.58</td><td>$1,231,955</td></tr><tr><td>LATAM</td><td>Central America</td><td>9396</td><td>54.9%</td><td>0.57</td><td>$5,093,850</td></tr><tr><td>Pacific Asia</td><td>Eastern Asia</td><td>3318</td><td>54.8%</td><td>0.57</td><td>$1,334,313</td></tr></tbody></table></div>
+      </div>
+    </section>
+
+    <section id="commercial" class="section">
+      <div class="grid">
+        <div class="panel"><h2>Top Categories By Net Sales</h2><img src="../reports/figures/top_categories_sales.svg" alt="Top categories by sales"></div>
+        <div class="panel"><h2>Category Profitability</h2><table><thead><tr><th>Category Name</th><th>Total Orders</th><th>Total Sales</th><th>Total Profit</th><th>Profit Margin</th></tr></thead><tbody><tr><td>Fishing</td><td>15164</td><td>$6,226,935</td><td>$756,221</td><td>12.1%</td></tr><tr><td>Cleats</td><td>20386</td><td>$3,982,857</td><td>$494,637</td><td>12.4%</td></tr><tr><td>Camping &amp; Hiking</td><td>12299</td><td>$3,700,784</td><td>$427,456</td><td>11.6%</td></tr><tr><td>Cardio Equipment</td><td>11355</td><td>$3,320,251</td><td>$383,011</td><td>11.5%</td></tr><tr><td>Women&#x27;s Apparel</td><td>17869</td><td>$2,828,708</td><td>$350,421</td><td>12.4%</td></tr><tr><td>Water Sports</td><td>13758</td><td>$2,798,044</td><td>$325,147</td><td>11.6%</td></tr><tr><td>Men&#x27;s Footwear</td><td>18783</td><td>$2,598,494</td><td>$311,903</td><td>12.0%</td></tr><tr><td>Indoor/Outdoor Games</td><td>16623</td><td>$2,596,454</td><td>$318,451</td><td>12.3%</td></tr><tr><td>Shop By Sport</td><td>10136</td><td>$1,177,186</td><td>$129,814</td><td>11.0%</td></tr><tr><td>Computers</td><td>442</td><td>$595,395</td><td>$69,657</td><td>11.7%</td></tr><tr><td>Cameras</td><td>592</td><td>$240,497</td><td>$30,290</td><td>12.6%</td></tr><tr><td>Garden</td><td>484</td><td>$231,765</td><td>$33,443</td><td>14.4%</td></tr></tbody></table></div>
+        <div class="panel wide"><h2>Market Performance</h2><table><thead><tr><th>Market</th><th>Total Orders</th><th>Late Delivery Rate</th><th>Avg Delay Days</th><th>Total Sales</th></tr></thead><tbody><tr><td>Europe</td><td>18561</td><td>54.9%</td><td>0.57</td><td>$9,769,198</td></tr><tr><td>Pacific Asia</td><td>17577</td><td>55.3%</td><td>0.58</td><td>$7,434,263</td></tr><tr><td>LATAM</td><td>17181</td><td>54.4%</td><td>0.56</td><td>$9,235,762</td></tr><tr><td>USCA</td><td>8579</td><td>54.8%</td><td>0.57</td><td>$4,553,500</td></tr><tr><td>Africa</td><td>3854</td><td>54.1%</td><td>0.55</td><td>$2,061,679</td></tr></tbody></table></div>
+      </div>
+    </section>
+
+    <section id="diagnostic" class="section">
+      <div class="grid">
+        <div class="panel"><h2>Shipping Delay Distribution</h2><img src="../reports/figures/shipping_delay_distribution.svg" alt="Shipping delay distribution"></div>
+        <div class="panel">
+          <h2>Analytical Guardrails</h2>
+          <p class="note">This dashboard avoids unsupported causal claims. Late delivery findings are prioritization signals for review by market, region, category, and shipping mode.</p>
+          <p class="note">Power BI model defect correction: order-level measures must use `fact_orders` plus an explicit item-filtered order scope for product/category selections.</p>
+          <p class="note">Validation: Python and SQL KPI reconciliation passed with zero material differences.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script>
+    const buttons = document.querySelectorAll('.tabs button');
+    const sections = document.querySelectorAll('.section');
+    buttons.forEach(button => button.addEventListener('click', () => {
+      buttons.forEach(b => b.classList.remove('active'));
+      sections.forEach(s => s.classList.remove('active'));
+      button.classList.add('active');
+      document.getElementById(button.dataset.tab).classList.add('active');
+    }));
+  </script>
+</body>
+</html>

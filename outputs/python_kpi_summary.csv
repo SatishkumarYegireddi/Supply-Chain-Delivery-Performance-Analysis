@@ -1,0 +1,2 @@
+total_sales,gross_sales,total_profit,profit_margin,total_orders,total_order_items,total_customers,average_order_value,late_deliveries,late_delivery_rate,on_time_deliveries,on_time_delivery_rate,cancelled_orders,cancellation_rate,average_shipping_delay_days,average_actual_shipping_days,average_scheduled_shipping_days
+33054402.380216613,36784735.01337984,3966902.974050357,0.1200113355074478,65752,180519,20652,502.71326165313013,36048,0.5482418785740357,29704,0.4517581214259642,1367,0.02079024212191264,0.5666747779535223,3.500897311108407,2.9342225331548852

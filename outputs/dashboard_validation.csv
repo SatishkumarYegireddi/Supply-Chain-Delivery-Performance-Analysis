@@ -1,0 +1,17 @@
+check,expected,actual,status
+dashboard_exists,true,true,PASS
+dashboard_non_empty,> 1000 bytes,11399,PASS
+dashboard_tabs_present,4 tabs,4,PASS
+dashboard_javascript_tabs_present,tab click handler,True,PASS
+dashboard_chart_assets_exist,all referenced SVG assets,all present,PASS
+total_sales_displayed,"$33,054,402.4","$33,054,402.4",PASS
+total_profit_displayed,"$3,966,903.0","$3,966,903.0",PASS
+profit_margin_displayed,12.0%,12.0%,PASS
+total_orders_displayed,"65,752","65,752",PASS
+late_delivery_rate_displayed,54.8%,54.8%,PASS
+average_shipping_delay_displayed,0.6 days,0.6 days,PASS
+shipping_mode_chart_rows,65752,65752,PASS
+market_chart_orders_reconcile,65752,65752,PASS
+monthly_trend_orders_reconcile,65752,65752,PASS
+category_sales_reconcile,33054402.380216613,33054402.380216613,PASS
+category_profit_reconcile,3966902.974050357,3966902.974050357,PASS

@@ -1,0 +1,48 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+~$*
+
+# Power BI temporary artifacts
+*.pbitmp
+*.pbix.tmp
+*.tmp.pbix
+
+# Local source and generated full-detail data
+archive.zip
+data/raw/
+data/processed/
+powerbi/data/
+
+# Reproducible local databases
+outputs/supply_chain.sqlite
+
+# Keep final portfolio outputs and documentation versionable
+!outputs/
+!reports/
+!docs/
+!powerbi/
+!dashboard/

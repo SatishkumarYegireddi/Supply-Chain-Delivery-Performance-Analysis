@@ -1,0 +1,77 @@
+table_name,field_name,data_type,business_description,recommended_format,default_summarization
+dim_customers,customer_id,int64,Customer Id field from dim_customers.,Text / Do not summarize,Do not summarize
+dim_customers,customer_segment,str,Customer Segment field from dim_customers.,Text,Do not summarize
+dim_customers,customer_city,str,Customer City field from dim_customers.,Text,Do not summarize
+dim_customers,customer_country,str,Customer Country field from dim_customers.,Whole number,Do not summarize
+dim_customers,customer_state,str,Customer State field from dim_customers.,Text,Do not summarize
+dim_date,date,str,Date field from dim_date.,Date/Time,Do not summarize
+dim_date,date_key,int64,Date Key field from dim_date.,Text / Do not summarize,Do not summarize
+dim_date,year,int64,Year field from dim_date.,Text,Do not summarize
+dim_date,quarter,str,Quarter field from dim_date.,Text,Do not summarize
+dim_date,month_number,int64,Month Number field from dim_date.,Text,Do not summarize
+dim_date,month_name,str,Month Name field from dim_date.,Text,Do not summarize
+dim_date,year_month,str,Year Month field from dim_date.,Text,Do not summarize
+dim_date,weekday_name,str,Weekday Name field from dim_date.,Text,Do not summarize
+dim_geography,geography_key,str,"Composite key for market, region, country, state, and city.",Text / Do not summarize,Do not summarize
+dim_geography,market,str,Market field from dim_geography.,Text,Do not summarize
+dim_geography,order_region,str,Order Region field from dim_geography.,Text,Do not summarize
+dim_geography,order_country,str,Order Country field from dim_geography.,Whole number,Do not summarize
+dim_geography,order_state,str,Order State field from dim_geography.,Text,Do not summarize
+dim_geography,order_city,str,Order City field from dim_geography.,Text,Do not summarize
+dim_order_status,order_status,str,Order Status field from dim_order_status.,Text,Do not summarize
+dim_products,product_card_id,int64,Product Card Id field from dim_products.,Text / Do not summarize,Do not summarize
+dim_products,product_category_id,int64,Product Category Id field from dim_products.,Text / Do not summarize,Do not summarize
+dim_products,product_name,str,Product Name field from dim_products.,Text,Do not summarize
+dim_products,product_price,float64,Product Price field from dim_products.,Currency,Do not summarize
+dim_products,product_status,int64,Product Status field from dim_products.,Text,Do not summarize
+dim_products,category_id,int64,Category Id field from dim_products.,Text / Do not summarize,Do not summarize
+dim_products,category_name,str,Category Name field from dim_products.,Text,Do not summarize
+dim_products,department_id,int64,Department Id field from dim_products.,Text / Do not summarize,Do not summarize
+dim_products,department_name,str,Department Name field from dim_products.,Text,Do not summarize
+dim_shipping_mode,shipping_mode,str,Shipping Mode field from dim_shipping_mode.,Text,Do not summarize
+fact_order_items,order_item_id,int64,Unique order-item identifier.,Text / Do not summarize,Do not summarize
+fact_order_items,order_id,int64,Business order identifier.,Text / Do not summarize,Do not summarize
+fact_order_items,customer_id,int64,Customer Id field from fact_order_items.,Text / Do not summarize,Do not summarize
+fact_order_items,product_card_id,int64,Product Card Id field from fact_order_items.,Text / Do not summarize,Do not summarize
+fact_order_items,geography_key,str,"Composite key for market, region, country, state, and city.",Text / Do not summarize,Do not summarize
+fact_order_items,order_date_key,int64,Order Date Key field from fact_order_items.,Text / Do not summarize,Do not summarize
+fact_order_items,shipping_date_key,int64,Shipping Date Key field from fact_order_items.,Text / Do not summarize,Do not summarize
+fact_order_items,sales,float64,Sales field from fact_order_items.,Currency,Sum
+fact_order_items,order_item_total,float64,Discount-adjusted net sales for the order item.,Currency,Do not summarize
+fact_order_items,order_item_discount,float64,Order Item Discount field from fact_order_items.,Currency,Sum
+fact_order_items,order_item_discount_rate,float64,Order Item Discount Rate field from fact_order_items.,Currency,Sum
+fact_order_items,order_item_quantity,int64,Order Item Quantity field from fact_order_items.,Whole number,Sum
+fact_order_items,benefit_per_order,float64,Source profit/benefit amount for the order item.,Text,Do not summarize
+fact_order_items,order_item_profit_ratio,float64,Order Item Profit Ratio field from fact_order_items.,Currency,Sum
+fact_order_items,profit_margin,float64,Profit Margin field from fact_order_items.,Currency,Sum
+fact_orders,order_id,int64,Business order identifier.,Text / Do not summarize,Do not summarize
+fact_orders,customer_id,int64,Customer Id field from fact_orders.,Text / Do not summarize,Do not summarize
+fact_orders,geography_key,str,"Composite key for market, region, country, state, and city.",Text / Do not summarize,Do not summarize
+fact_orders,order_date_key,int64,Order Date Key field from fact_orders.,Text / Do not summarize,Do not summarize
+fact_orders,shipping_date_key,int64,Shipping Date Key field from fact_orders.,Text / Do not summarize,Do not summarize
+fact_orders,order_date,str,Order Date field from fact_orders.,Date/Time,Do not summarize
+fact_orders,shipping_date,str,Shipping Date field from fact_orders.,Date/Time,Do not summarize
+fact_orders,shipping_mode,str,Shipping Mode field from fact_orders.,Text,Do not summarize
+fact_orders,type,str,Type field from fact_orders.,Text,Do not summarize
+fact_orders,market,str,Market field from fact_orders.,Text,Do not summarize
+fact_orders,order_region,str,Order Region field from fact_orders.,Text,Do not summarize
+fact_orders,order_country,str,Order Country field from fact_orders.,Whole number,Do not summarize
+fact_orders,order_state,str,Order State field from fact_orders.,Text,Do not summarize
+fact_orders,order_city,str,Order City field from fact_orders.,Text,Do not summarize
+fact_orders,customer_segment,str,Customer Segment field from fact_orders.,Text,Do not summarize
+fact_orders,order_status,str,Order Status field from fact_orders.,Text,Do not summarize
+fact_orders,days_for_shipping_real,int64,Days For Shipping Real field from fact_orders.,Whole number,Average
+fact_orders,days_for_shipment_scheduled,int64,Days For Shipment Scheduled field from fact_orders.,Whole number,Average
+fact_orders,shipping_delay_days,int64,Actual shipping days minus scheduled shipping days.,Whole number,Average
+fact_orders,late_delivery_flag,int64,Order-level flag where 1 means the source marks the order late.,Text,Do not summarize
+fact_orders,on_time_flag,int64,On Time Flag field from fact_orders.,Text,Do not summarize
+fact_orders,cancellation_flag,int64,Cancellation Flag field from fact_orders.,Text,Do not summarize
+fact_orders,suspected_fraud_flag,int64,Suspected Fraud Flag field from fact_orders.,Text,Do not summarize
+fact_orders,delivery_status,str,Delivery Status field from fact_orders.,Text,Do not summarize
+fact_orders,delay_severity,str,Delay Severity field from fact_orders.,Text,Do not summarize
+fact_orders,delivery_performance_group,str,Delivery Performance Group field from fact_orders.,Text,Do not summarize
+fact_orders,order_item_count,int64,Order Item Count field from fact_orders.,Whole number,Do not summarize
+fact_orders,gross_order_sales,float64,Gross Order Sales field from fact_orders.,Currency,Sum
+fact_orders,net_order_sales,float64,Net Order Sales field from fact_orders.,Currency,Sum
+fact_orders,order_discount,float64,Order Discount field from fact_orders.,Currency,Sum
+fact_orders,order_profit,float64,Order Profit field from fact_orders.,Currency,Sum

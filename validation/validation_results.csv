@@ -1,0 +1,66 @@
+check,status,details
+required_file::archive.zip,PASS,archive.zip
+required_file::data/raw/DataCoSupplyChainDataset.csv,PASS,data/raw/DataCoSupplyChainDataset.csv
+required_file::data/raw/DescriptionDataCoSupplyChain.csv,PASS,data/raw/DescriptionDataCoSupplyChain.csv
+required_file::data/raw/tokenized_access_logs.csv,PASS,data/raw/tokenized_access_logs.csv
+required_file::data/processed/supply_chain_order_items.csv,PASS,data/processed/supply_chain_order_items.csv
+required_file::data/processed/supply_chain_orders.csv,PASS,data/processed/supply_chain_orders.csv
+required_file::outputs/dataset_inventory.csv,PASS,outputs/dataset_inventory.csv
+required_file::outputs/data_quality_issue_register.csv,PASS,outputs/data_quality_issue_register.csv
+required_file::outputs/kpi_dictionary.csv,PASS,outputs/kpi_dictionary.csv
+required_file::outputs/kpi_validation.csv,PASS,outputs/kpi_validation.csv
+required_file::outputs/dashboard_validation.csv,PASS,outputs/dashboard_validation.csv
+required_file::outputs/repository_file_inventory.csv,PASS,outputs/repository_file_inventory.csv
+required_file::outputs/repository_readiness_checks.csv,PASS,outputs/repository_readiness_checks.csv
+required_file::outputs/sql/executive_kpi_summary.csv,PASS,outputs/sql/executive_kpi_summary.csv
+required_file::powerbi/data/fact_order_items.csv,PASS,powerbi/data/fact_order_items.csv
+required_file::powerbi/data/fact_orders.csv,PASS,powerbi/data/fact_orders.csv
+required_file::powerbi/data/dim_shipping_mode.csv,PASS,powerbi/data/dim_shipping_mode.csv
+required_file::powerbi/data/dim_order_status.csv,PASS,powerbi/data/dim_order_status.csv
+required_file::powerbi/model_specification.md,PASS,powerbi/model_specification.md
+required_file::powerbi/dax_measures.md,PASS,powerbi/dax_measures.md
+required_file::powerbi/dashboard_blueprint.md,PASS,powerbi/dashboard_blueprint.md
+required_file::powerbi/dashboard_build_guide.md,PASS,powerbi/dashboard_build_guide.md
+required_file::powerbi/style_guide.md,PASS,powerbi/style_guide.md
+required_file::dashboard/supply_chain_delivery_dashboard.html,PASS,dashboard/supply_chain_delivery_dashboard.html
+required_file::README.md,PASS,README.md
+required_file::PROJECT_STATUS.md,PASS,PROJECT_STATUS.md
+required_file::docs/filter_propagation_validation.md,PASS,docs/filter_propagation_validation.md
+required_file::docs/github_data_strategy.md,PASS,docs/github_data_strategy.md
+required_file::docs/repository_readiness_report.md,PASS,docs/repository_readiness_report.md
+required_file::docs/dashboard_environment_inspection.md,PASS,docs/dashboard_environment_inspection.md
+required_file::docs/resume_bullets.md,PASS,docs/resume_bullets.md
+required_file::docs/github_repository_description.md,PASS,docs/github_repository_description.md
+required_file::docs/linkedin_project_description.md,PASS,docs/linkedin_project_description.md
+processed_dataset_not_empty,PASS,rows=180519
+orders_dataset_not_empty,PASS,rows=65752
+fact_orders_dataset_not_empty,PASS,rows=65752
+fact_order_items_dataset_not_empty,PASS,rows=180519
+order_item_id_exists,PASS,
+order_id_exists,PASS,
+order_item_id_unique,PASS,"distinct=180519, rows=180519"
+order_grain_unique,PASS,"distinct=65752, rows=65752"
+fact_orders_grain_unique,PASS,"distinct=65752, rows=65752"
+fact_items_order_count_matches_processed,PASS,"fact_items=180519, processed=180519"
+late_rate_valid,PASS,
+cancellation_rate_valid,PASS,
+total_sales_positive,PASS,
+python_sql_kpis_pass,PASS,
+dashboard_validation_pass,PASS,
+repository_readiness_pass,PASS,
+baseline_kpi::total_sales,PASS,"actual=33054402.380216613, expected=33054402.380216613"
+baseline_kpi::total_profit,PASS,"actual=3966902.974050357, expected=3966902.974050357"
+baseline_kpi::profit_margin,PASS,"actual=0.1200113355074478, expected=0.1200113355074478"
+baseline_kpi::total_orders,PASS,"actual=65752, expected=65752"
+baseline_kpi::total_order_items,PASS,"actual=180519, expected=180519"
+baseline_kpi::total_customers,PASS,"actual=20652, expected=20652"
+baseline_kpi::late_delivery_rate,PASS,"actual=0.5482418785740357, expected=0.5482418785740357"
+baseline_kpi::average_shipping_delay_days,PASS,"actual=0.5666747779535223, expected=0.5666747779535223"
+processed_sensitive_columns_removed,PASS,
+powerbi_customer_sensitive_columns_removed,PASS,dim_customers checked
+cache_artifacts_absent,PASS,
+repository_intended_files_under_100_mib,PASS,
+dashboard_tab::Executive Overview,PASS,
+dashboard_tab::Delivery & Logistics,PASS,
+dashboard_tab::Market & Commercial,PASS,
+dashboard_tab::Diagnostic Detail,PASS,

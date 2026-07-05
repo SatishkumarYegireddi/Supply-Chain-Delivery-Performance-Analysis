@@ -1,0 +1,150 @@
+#    Product and category filters live on `fact_order_items`. Measures that calculate order-level KPIs apply the current item-filtered order set to `fact_orders` using `TREATAS`.
+
+```DAX
+-- Pattern used inside order-level measures
+VAR ScopedOrders = VALUES(fact_order_items[order_id])
+RETURN CALCULATE(<order expression>, TREATAS(ScopedOrders, fact_orders[order_id]))
+```
+
+#    ```DAX
+Total Sales = SUM(fact_order_items[order_item_total])
+```
+Format: Currency. Definition: discount-adjusted order-item revenue.
+
+#    ```DAX
+Total Profit = SUM(fact_order_items[benefit_per_order])
+```
+Format: Currency. Definition: source item-level profit.
+
+#    ```DAX
+Profit Margin = DIVIDE([Total Profit], [Total Sales])
+```
+Format: Percentage. Definition: profit divided by net sales.
+
+#    ```DAX
+Total Orders =
+VAR ScopedOrders = VALUES(fact_order_items[order_id])
+RETURN
+    CALCULATE(
+        DISTINCTCOUNT(fact_orders[order_id]),
+        TREATAS(ScopedOrders, fact_orders[order_id])
+    )
+```
+Format: Whole number. Filter behavior: respects date, geography, customer, product/category, and shipping-mode filters.
+
+#    ```DAX
+Total Order Items = COUNTROWS(fact_order_items)
+```
+Format: Whole number.
+
+#    ```DAX
+Total Customers = DISTINCTCOUNT(dim_customers[customer_id])
+```
+Format: Whole number.
+
+#    ```DAX
+Average Order Value = DIVIDE([Total Sales], [Total Orders])
+```
+Format: Currency.
+
+#    ```DAX
+Late Deliveries =
+VAR ScopedOrders = VALUES(fact_order_items[order_id])
+RETURN
+    CALCULATE(
+        SUM(fact_orders[late_delivery_flag]),
+        TREATAS(ScopedOrders, fact_orders[order_id])
+    )
+```
+Format: Whole number.
+
+#    ```DAX
+Late Delivery Rate = DIVIDE([Late Deliveries], [Total Orders])
+```
+Format: Percentage.
+
+#    ```DAX
+On-Time Deliveries =
+VAR ScopedOrders = VALUES(fact_order_items[order_id])
+RETURN
+    CALCULATE(
+        SUMX(fact_orders, IF(fact_orders[late_delivery_flag] = 0, 1, 0)),
+        TREATAS(ScopedOrders, fact_orders[order_id])
+    )
+```
+Format: Whole number.
+
+#    ```DAX
+On-Time Delivery Rate = DIVIDE([On-Time Deliveries], [Total Orders])
+```
+Format: Percentage.
+
+#    ```DAX
+Average Shipping Delay =
+VAR ScopedOrders = VALUES(fact_order_items[order_id])
+RETURN
+    CALCULATE(
+        AVERAGE(fact_orders[shipping_delay_days]),
+        TREATAS(ScopedOrders, fact_orders[order_id])
+    )
+```
+Format: Decimal days.
+
+#    ```DAX
+Average Actual Shipping Days =
+VAR ScopedOrders = VALUES(fact_order_items[order_id])
+RETURN
+    CALCULATE(
+        AVERAGE(fact_orders[days_for_shipping_real]),
+        TREATAS(ScopedOrders, fact_orders[order_id])
+    )
+```
+Format: Decimal days.
+
+#    ```DAX
+Average Scheduled Shipping Days =
+VAR ScopedOrders = VALUES(fact_order_items[order_id])
+RETURN
+    CALCULATE(
+        AVERAGE(fact_orders[days_for_shipment_scheduled]),
+        TREATAS(ScopedOrders, fact_orders[order_id])
+    )
+```
+Format: Decimal days.
+
+#    ```DAX
+Cancelled Orders =
+VAR ScopedOrders = VALUES(fact_order_items[order_id])
+RETURN
+    CALCULATE(
+        SUM(fact_orders[cancellation_flag]),
+        TREATAS(ScopedOrders, fact_orders[order_id])
+    )
+```
+Format: Whole number.
+
+#    ```DAX
+Cancellation Rate = DIVIDE([Cancelled Orders], [Total Orders])
+```
+Format: Percentage.
+
+#    ```DAX
+Shipping-Mode Filtered Sales =
+VAR ScopedOrders = VALUES(fact_orders[order_id])
+RETURN
+    CALCULATE(
+        [Total Sales],
+        TREATAS(ScopedOrders, fact_order_items[order_id])
+    )
+```
+Format: Currency. Use when a visual slices sales by `dim_shipping_mode`.
+
+#    ```DAX
+Sales Previous Period = CALCULATE([Total Sales], DATEADD(dim_date[date], -1, MONTH))
+```
+Format: Currency.
+
+#    ```DAX
+Sales Growth = DIVIDE([Total Sales] - [Sales Previous Period], [Sales Previous Period])
+```
+Format: Percentage.

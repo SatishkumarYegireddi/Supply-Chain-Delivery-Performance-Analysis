@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="560" viewBox="0 0 960 560">
+<rect width="100%" height="100%" fill="#F7F8FA"/>
+<text x="480.0" y="38.0" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700" fill="#2B2B2B" text-anchor="middle">Late Delivery Rate by Shipping Mode</text>
+<text x="24.0" y="250.0" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-weight="600" fill="#2B2B2B" text-anchor="middle">Late delivery rate (%)</text>
+<line x1="90" y1="420" x2="920" y2="420" stroke="#BBBBBB"/>
+<line x1="90" y1="80" x2="90" y2="420" stroke="#BBBBBB"/>
+<rect x="90.0" y="80.0" width="194.0" height="340.0" fill="#B23A48" rx="2"/>
+<text x="187.0" y="72.0" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600" fill="#2B2B2B" text-anchor="middle">95.3%</text>
+<text x="187.0" y="444.0" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#2B2B2B" text-anchor="end" transform="rotate(-35 187.0,444.0)">First Class</text>
+<rect x="302.0" y="146.2" width="194.0" height="273.8" fill="#B23A48" rx="2"/>
+<text x="399.0" y="138.2" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600" fill="#2B2B2B" text-anchor="middle">76.7%</text>
+<text x="399.0" y="444.0" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#2B2B2B" text-anchor="end" transform="rotate(-35 399.0,444.0)">Second Class</text>
+<rect x="514.0" y="255.3" width="194.0" height="164.7" fill="#B23A48" rx="2"/>
+<text x="611.0" y="247.3" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600" fill="#2B2B2B" text-anchor="middle">46.1%</text>
+<text x="611.0" y="444.0" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#2B2B2B" text-anchor="end" transform="rotate(-35 611.0,444.0)">Same Day</text>
+<rect x="726.0" y="283.9" width="194.0" height="136.1" fill="#B23A48" rx="2"/>
+<text x="823.0" y="275.9" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600" fill="#2B2B2B" text-anchor="middle">38.1%</text>
+<text x="823.0" y="444.0" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#2B2B2B" text-anchor="end" transform="rotate(-35 823.0,444.0)">Standard Class</text>
+</svg>

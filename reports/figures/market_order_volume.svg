@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="560" viewBox="0 0 960 560">
+<rect width="100%" height="100%" fill="#F7F8FA"/>
+<text x="480.0" y="38.0" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700" fill="#2B2B2B" text-anchor="middle">Order Volume by Market</text>
+<text x="24.0" y="250.0" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-weight="600" fill="#2B2B2B" text-anchor="middle">Total orders</text>
+<line x1="90" y1="420" x2="920" y2="420" stroke="#BBBBBB"/>
+<line x1="90" y1="80" x2="90" y2="420" stroke="#BBBBBB"/>
+<rect x="90.0" y="80.0" width="151.6" height="340.0" fill="#2F5F8F" rx="2"/>
+<text x="165.8" y="72.0" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600" fill="#2B2B2B" text-anchor="middle">18,561.0</text>
+<text x="165.8" y="444.0" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#2B2B2B" text-anchor="end" transform="rotate(-35 165.8,444.0)">Europe</text>
+<rect x="259.6" y="98.0" width="151.6" height="322.0" fill="#2F5F8F" rx="2"/>
+<text x="335.4" y="90.0" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600" fill="#2B2B2B" text-anchor="middle">17,577.0</text>
+<text x="335.4" y="444.0" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#2B2B2B" text-anchor="end" transform="rotate(-35 335.4,444.0)">Pacific Asia</text>
+<rect x="429.2" y="105.3" width="151.6" height="314.7" fill="#2F5F8F" rx="2"/>
+<text x="505.0" y="97.3" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600" fill="#2B2B2B" text-anchor="middle">17,181.0</text>
+<text x="505.0" y="444.0" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#2B2B2B" text-anchor="end" transform="rotate(-35 505.0,444.0)">LATAM</text>
+<rect x="598.8" y="262.9" width="151.6" height="157.1" fill="#2F5F8F" rx="2"/>
+<text x="674.6" y="254.9" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600" fill="#2B2B2B" text-anchor="middle">8,579.0</text>
+<text x="674.6" y="444.0" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#2B2B2B" text-anchor="end" transform="rotate(-35 674.6,444.0)">USCA</text>
+<rect x="768.4" y="349.4" width="151.6" height="70.6" fill="#2F5F8F" rx="2"/>
+<text x="844.2" y="341.4" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600" fill="#2B2B2B" text-anchor="middle">3,854.0</text>
+<text x="844.2" y="444.0" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#2B2B2B" text-anchor="end" transform="rotate(-35 844.2,444.0)">Africa</text>
+</svg>

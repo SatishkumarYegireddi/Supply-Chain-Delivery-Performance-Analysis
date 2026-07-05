@@ -1,0 +1,3 @@
+-- SQLite analytical layer generated from data/processed/supply_chain_order_items.csv
+-- Grain: one row per order item in order_items.
+-- v_order_level rolls order-item records to one row per order for delivery and cancellation KPIs.

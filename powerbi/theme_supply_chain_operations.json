@@ -1,0 +1,21 @@
+{
+  "name": "Supply Chain Operations",
+  "dataColors": [
+    "#2F5F8F",
+    "#B23A48",
+    "#2E7D32",
+    "#C77D00",
+    "#6B6B6B",
+    "#5C4B8A"
+  ],
+  "background": "#F7F8FA",
+  "foreground": "#2B2B2B",
+  "tableAccent": "#2F5F8F",
+  "visualStyles": {
+    "*": {
+      "*": {
+        "fontFamily": "Segoe UI"
+      }
+    }
+  }
+}

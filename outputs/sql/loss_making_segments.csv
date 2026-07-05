@@ -1,0 +1,5 @@
+market,order_region,category_name,total_orders,total_sales,total_profit,profit_margin
+Europe,Western Europe,DVDs,117,17470.2699571,-491.14997592300006,-0.028113473754502252
+Europe,Northern Europe,Girls' Apparel,55,5625.95003706,-233.25998668400004,-0.04146143942755252
+USCA,East of USA,Girls' Apparel,59,5579.46000291,-67.88002987399999,-0.012166057259770078
+Africa,West Africa,Electronics,69,7939.78002324,-7.310011328000057,-0.0009206818459205936

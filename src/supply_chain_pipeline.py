@@ -107,14 +107,15 @@ def profile_source_files() -> dict[str, pd.DataFrame]:
     inventory_rows = []
     missing_rows = []
     sample_records = {}
-    dataframes = {}
+    main_dataframe = None
 
     with zipfile.ZipFile(ARCHIVE) as zf:
         archive_members = {Path(info.filename).name: info for info in zf.infolist() if not info.is_dir()}
 
     for path in sorted(RAW_DIR.glob("*.csv")):
         df = read_csv(path)
-        dataframes[path.name] = df
+        if path.name == MAIN_SOURCE:
+            main_dataframe = df
         duplicate_rows = int(df.duplicated().sum())
         missing = df.isna().sum()
         inferred = {col: str(dtype) for col, dtype in df.dtypes.items()}
@@ -180,7 +181,12 @@ def profile_source_files() -> dict[str, pd.DataFrame]:
     (OUTPUTS_DIR / "source_sample_records.json").write_text(
         json.dumps(sample_records, indent=2, ensure_ascii=True, default=str), encoding="utf-8"
     )
-    return dataframes
+    if main_dataframe is None:
+        raise FileNotFoundError(
+            f"Main analytical source not found: {MAIN_SOURCE}"
+        )
+
+    return {MAIN_SOURCE: main_dataframe}
 
 
 def normalize_columns(df: pd.DataFrame) -> pd.DataFrame:

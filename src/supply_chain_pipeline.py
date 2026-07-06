@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import csv
 import html
@@ -1656,7 +1656,7 @@ def create_corrected_powerbi_docs(metrics: Metrics, eda: dict[str, pd.DataFrame]
 
     ## Total Customers
     ```DAX
-    Total Customers = DISTINCTCOUNT(dim_customers[customer_id])
+    Total Customers = DISTINCTCOUNT(fact_order_items[customer_id])
     ```
     Format: Whole number.
 
@@ -2261,7 +2261,7 @@ def create_dashboard_preview(metrics: Metrics) -> None:
 <rect width="1200" height="620" fill="#f5f7fb"/>
 <rect x="35" y="30" width="1130" height="560" rx="22" fill="white" stroke="#d9dee8"/>
 <text x="70" y="82" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#172033">Supply Chain Delivery Performance</text>
-<text x="70" y="112" font-family="Arial, sans-serif" font-size="16" fill="#667085">Executive overview · validated order-level delivery and item-level commercial KPIs</text>
+<text x="70" y="112" font-family="Arial, sans-serif" font-size="16" fill="#667085">Executive overview Â· validated order-level delivery and item-level commercial KPIs</text>
 <g font-family="Arial, sans-serif">
 <rect x="70" y="145" width="240" height="105" rx="14" fill="#f8fafc" stroke="#e2e8f0"/><text x="90" y="178" font-size="15" fill="#667085">TOTAL SALES</text><text x="90" y="222" font-size="28" font-weight="700" fill="#172033">{money(metrics.total_sales)}</text>
 <rect x="330" y="145" width="240" height="105" rx="14" fill="#f8fafc" stroke="#e2e8f0"/><text x="350" y="178" font-size="15" fill="#667085">TOTAL PROFIT</text><text x="350" y="222" font-size="28" font-weight="700" fill="#172033">{money(metrics.total_profit)}</text>
@@ -2287,7 +2287,7 @@ An end-to-end supply chain analytics project focused on late-delivery risk, logi
 Operations teams need to identify where late deliveries are concentrated and whether those operational risks overlap with material sales and profitability exposure. This analysis evaluates delivery performance at order grain while preserving order-item grain for commercial metrics.
 
 ## Dataset Source and Privacy
-This project uses **DataCo SMART SUPPLY CHAIN FOR BIG DATA ANALYSIS**, Version 5, published by Fabian Constante, Fernando Silva, and António Pereira on Mendeley Data (2019), DOI `10.17632/8gx2fvg2k6.5`.
+This project uses **DataCo SMART SUPPLY CHAIN FOR BIG DATA ANALYSIS**, Version 5, published by Fabian Constante, Fernando Silva, and AntÃ³nio Pereira on Mendeley Data (2019), DOI `10.17632/8gx2fvg2k6.5`.
 
 Dataset page: `https://data.mendeley.com/datasets/8gx2fvg2k6/5`
 
@@ -2661,3 +2661,4 @@ def main() -> None:
     print(f"Processed order-item rows: {len(df):,}")
     print(f"Distinct orders: {len(orders):,}")
     print(f"KPI validation: {'PASS' if validation['validation_status'].eq('PASS').all() else 'FAIL'}")
+

@@ -51,7 +51,7 @@ repository_readiness_pass,PASS,
 processed_sensitive_columns_removed,PASS,
 powerbi_customer_sensitive_columns_removed,PASS,dim_customers checked
 public_sample_sensitive_columns_removed,PASS,
-cache_artifacts_absent,PASS,
+cache_artifacts_absent,FAIL,src/__pycache__/supply_chain_pipeline.cpython-314.pyc; src/__pycache__
 repository_intended_files_under_100_mib,PASS,
 dashboard_tab::Executive Overview,PASS,
 dashboard_tab::Delivery & Logistics,PASS,

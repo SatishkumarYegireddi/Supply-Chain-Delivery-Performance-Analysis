@@ -1541,7 +1541,7 @@ def create_docs(
         """,
     )
 
-    create_corrected_powerbi_docs(metrics, eda, validation)
+    create_powerbi_docs(metrics, eda, validation)
     create_dashboard_environment_doc()
     create_html_dashboard(metrics, eda)
     create_portfolio_docs(metrics, eda)
@@ -1551,17 +1551,13 @@ def create_docs(
 
 
 def create_powerbi_docs(metrics: Metrics, eda: dict[str, pd.DataFrame], validation: pd.DataFrame) -> None:
-    create_corrected_powerbi_docs(metrics, eda, validation)
-
-
-def create_corrected_powerbi_docs(metrics: Metrics, eda: dict[str, pd.DataFrame], validation: pd.DataFrame) -> None:
     write_text(
         POWERBI_DIR / "model_specification.md",
         """
-        # Corrected Power BI Model Specification
+        # Power BI Model Specification
 
-        ## Defect Corrected
-        The earlier model placed order-level measures on `dim_orders` while dashboard visuals used `dim_geography` and `dim_products`. With single-direction relationships, product/category filters did not reliably propagate to the order-level table. The corrected model avoids bidirectional filtering and uses explicit order-scope DAX.
+        ## Model Design
+        The semantic model separates order-level delivery facts from order-item commercial facts. Order-level measures use `fact_orders`, item-level measures use `fact_order_items`, and product/category selections are applied to order-level calculations through explicit order-scope DAX. This keeps filter behavior predictable without bidirectional relationships.
 
         ## Files To Import
         Import CSV files from `powerbi/data` after running `python run_pipeline.py`:
@@ -1607,7 +1603,7 @@ def create_corrected_powerbi_docs(metrics: Metrics, eda: dict[str, pd.DataFrame]
     )
 
     dax = """
-    # Corrected DAX Measure Library
+    # DAX Measure Library
 
     ## Order Scope Helper Pattern
     Product and category filters live on `fact_order_items`. Measures that calculate order-level KPIs apply the current item-filtered order set to `fact_orders` using `TREATAS`.
@@ -1656,7 +1652,7 @@ def create_corrected_powerbi_docs(metrics: Metrics, eda: dict[str, pd.DataFrame]
 
     ## Total Customers
     ```DAX
-    Total Customers = DISTINCTCOUNT(fact_order_items[customer_id])
+    Total Customers = DISTINCTCOUNT(dim_customers[customer_id])
     ```
     Format: Whole number.
 
@@ -1788,10 +1784,10 @@ def create_corrected_powerbi_docs(metrics: Metrics, eda: dict[str, pd.DataFrame]
         f"""
         # Filter Propagation Validation
 
-        ## Defect
-        The prior design documented order-level measures on `dim_orders` while product and geography fields were used in visuals. Single-direction filters from product/geography dimensions through `fact_order_items` could not reliably filter `dim_orders`.
+        ## Filter Strategy
+        The model uses `fact_orders` for order-grain delivery KPIs and `fact_order_items` for item-grain commercial KPIs. Product and category selections originate from `dim_products` and filter `fact_order_items`; order-level measures then apply the visible item order set to `fact_orders` with `TREATAS`.
 
-        ## Corrected Design
+        ## Model Structure
         The model now uses:
         - `fact_orders` for one-row-per-order delivery and cancellation KPIs.
         - `fact_order_items` for one-row-per-item commercial KPIs.
@@ -1800,19 +1796,19 @@ def create_corrected_powerbi_docs(metrics: Metrics, eda: dict[str, pd.DataFrame]
 
         ## Conceptual Checks
         - Market and region fields filter `fact_orders` directly through `dim_geography`, so Total Orders, Late Delivery Rate, Average Shipping Delay, and Cancellation Rate respond to geography filters.
-        - Category and product fields filter `fact_order_items`; the corrected DAX applies the filtered order IDs to `fact_orders`, so order-level delivery KPIs respond to product/category filters without bidirectional relationships.
+        - Category and product fields filter `fact_order_items`; the DAX applies the filtered order IDs to `fact_orders`, so order-level delivery KPIs respond to product/category filters without bidirectional relationships.
         - Date filters apply to both facts through `dim_date`, preserving time-series compatibility for sales and delivery KPIs.
         - Shipping mode filters apply to `fact_orders`; sales by shipping mode uses the `Shipping-Mode Filtered Sales` measure to push the order scope back to `fact_order_items`.
 
         ## KPI Reconciliation
-        Python and SQL headline KPI validation remains {"PASS" if validation["validation_status"].eq("PASS").all() else "FAIL"}. The corrected DAX uses the same numerator, denominator, and grain definitions as `outputs/kpi_validation.csv`.
+        Python and SQL headline KPI validation remains {"PASS" if validation["validation_status"].eq("PASS").all() else "FAIL"}. The DAX uses the same numerator, denominator, and grain definitions as `outputs/kpi_validation.csv`.
         """,
     )
 
     write_text(
         POWERBI_DIR / "dashboard_blueprint.md",
         """
-        # Corrected Dashboard Blueprint
+        # Dashboard Blueprint
 
         ## Page 1: Executive Overview
         Valid measures: Total Sales, Total Profit, Profit Margin, Total Orders, Late Delivery Rate, Average Shipping Delay, Cancellation Rate.
@@ -1824,24 +1820,24 @@ def create_corrected_powerbi_docs(metrics: Metrics, eda: dict[str, pd.DataFrame]
 
         ## Page 3: Market & Commercial Performance
         Valid measures: Total Sales, Total Profit, Profit Margin, Total Orders, Late Delivery Rate.
-        Use `dim_geography` fields for market/region and `dim_products` fields for category/product. Product/category delivery KPIs are valid because corrected DAX applies item-filtered order scope to `fact_orders`.
+        Use `dim_geography` fields for market/region and `dim_products` fields for category/product. Product/category delivery KPIs are valid because DAX measures apply item-filtered order scope to `fact_orders`.
 
         ## Page 4: Diagnostic / Segment Detail
         Valid matrix fields: market, region, category, product, shipping mode, order status, Total Orders, Total Sales, Total Profit, Profit Margin, Late Delivery Rate, Average Shipping Delay.
 
-        ## Removed Or Redesigned Visuals
-        No visual should use raw columns from `fact_orders` and `fact_order_items` together without a measure. Product/category delivery visuals must use the corrected measures in `dax_measures.md`.
+        ## Visual Design Guardrails
+        No visual should use raw columns from `fact_orders` and `fact_order_items` together without a measure. Product/category delivery visuals must use the scoped order-level measures in `dax_measures.md`.
         """,
     )
 
     write_text(
         POWERBI_DIR / "dashboard_build_guide.md",
         """
-        # Corrected Power BI Build Notes
+        # Power BI Build Notes
 
         The completed interactive deliverable is `dashboard/supply_chain_delivery_dashboard.html`. The Power BI directory documents the corresponding model design, DAX measures, theme, and implementation plan.
 
-        If building a Power BI report later, import the CSVs from `powerbi/data`, create the relationships in `model_specification.md`, and create measures from `dax_measures.md`. Do not use the earlier `dim_orders` pattern.
+        If building a Power BI report later, import the CSVs from `powerbi/data`, create the relationships in `model_specification.md`, and create measures from `dax_measures.md`. Keep order-level delivery KPIs on `fact_orders` and commercial KPIs on `fact_order_items`.
         """,
     )
 
@@ -2006,7 +2002,7 @@ def create_html_dashboard(metrics: Metrics, eda: dict[str, pd.DataFrame]) -> Non
             <div class="panel">
               <h2>Analytical Guardrails</h2>
               <p class="note">This dashboard avoids unsupported causal claims. Late delivery findings are prioritization signals for review by market, region, category, and shipping mode.</p>
-              <p class="note">Power BI model defect correction: order-level measures must use `fact_orders` plus an explicit item-filtered order scope for product/category selections.</p>
+              <p class="note">Power BI model guidance: order-level measures use `fact_orders` plus an explicit item-filtered order scope for product/category selections.</p>
               <p class="note">Validation: Python and SQL KPI reconciliation passed with zero material differences.</p>
             </div>
           </div>
@@ -2075,7 +2071,7 @@ def create_portfolio_docs(metrics: Metrics, eda: dict[str, pd.DataFrame]) -> Non
         """
         # GitHub Repository Description
 
-        End-to-end supply chain delivery performance analytics portfolio project using Python, pandas, SQLite, data quality validation, KPI governance, SQL analysis, corrected Power BI model artifacts, and a finished interactive HTML dashboard.
+        End-to-end supply chain delivery performance analytics portfolio project using Python, pandas, SQLite, data quality validation, KPI governance, SQL analysis, Power BI model artifacts, and a finished interactive HTML dashboard.
 
         ## Suggested Topics
         supply-chain, logistics, data-analysis, pandas, sql, sqlite, power-bi, business-intelligence, data-quality, portfolio-project, analytics-engineering
@@ -2087,7 +2083,7 @@ def create_portfolio_docs(metrics: Metrics, eda: dict[str, pd.DataFrame]) -> Non
         # Resume Bullet Options
 
         - Built an end-to-end supply chain delivery analytics project in Python, pandas, and SQLite, profiling {metrics.total_order_items:,} order-item records and validating core KPIs across Python and SQL.
-        - Designed grain-aware delivery and profitability KPIs for {metrics.total_orders:,} orders, including late delivery rate, average shipping delay, profit margin, and cancellation rate, with corrected Power BI model documentation and DAX measures.
+        - Designed grain-aware delivery and profitability KPIs for {metrics.total_orders:,} orders, including late delivery rate, average shipping delay, profit margin, and cancellation rate, with Power BI model documentation and DAX measures.
         - Developed a recruiter-ready analytics portfolio case study with automated data extraction, cleaning, EDA, SQL analysis, KPI reconciliation, an interactive HTML dashboard, and business recommendations.
         """,
     )
@@ -2096,7 +2092,7 @@ def create_portfolio_docs(metrics: Metrics, eda: dict[str, pd.DataFrame]) -> Non
         f"""
         # LinkedIn Project Description
 
-        I completed an end-to-end Supply Chain Delivery Performance Analysis portfolio project using Python, pandas, and SQLite. The project starts from a local raw ZIP archive, profiles and cleans {metrics.total_order_items:,} order-item records, defines grain-aware KPIs, validates Python metrics against SQL, documents a corrected Power BI model, and delivers a finished interactive HTML dashboard.
+        I completed an end-to-end Supply Chain Delivery Performance Analysis portfolio project using Python, pandas, and SQLite. The project starts from a local raw ZIP archive, profiles and cleans {metrics.total_order_items:,} order-item records, defines grain-aware KPIs, validates Python metrics against SQL, documents a Power BI semantic model, and delivers a finished interactive HTML dashboard.
 
         The analysis focuses on late delivery performance, shipping mode effectiveness, regional operational risk, profitability, and high-sales low-margin segments. It is structured as a practical business analytics case study rather than a generic notebook.
         """,

@@ -1,4 +1,4 @@
-# Corrected DAX Measure Library
+# DAX Measure Library
 
 ## Order Scope Helper Pattern
 Product and category filters live on `fact_order_items`. Measures that calculate order-level KPIs apply the current item-filtered order set to `fact_orders` using `TREATAS`.

@@ -1,7 +1,7 @@
-# Corrected Power BI Model Specification
+# Power BI Model Specification
 
-## Defect Corrected
-The earlier model placed order-level measures on `dim_orders` while dashboard visuals used `dim_geography` and `dim_products`. With single-direction relationships, product/category filters did not reliably propagate to the order-level table. The corrected model avoids bidirectional filtering and uses explicit order-scope DAX.
+## Model Design
+The semantic model separates order-level delivery facts from order-item commercial facts. Order-level measures use `fact_orders`, item-level measures use `fact_order_items`, and product/category selections are applied to order-level calculations through explicit order-scope DAX. This keeps filter behavior predictable without bidirectional relationships.
 
 ## Files To Import
 Import CSV files from `powerbi/data` after running `python run_pipeline.py`:

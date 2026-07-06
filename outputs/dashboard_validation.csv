@@ -1,6 +1,6 @@
 check,expected,actual,status
 dashboard_exists,true,true,PASS
-dashboard_non_empty,> 1000 bytes,11399,PASS
+dashboard_non_empty,> 1000 bytes,11385,PASS
 dashboard_tabs_present,4 tabs,4,PASS
 dashboard_javascript_tabs_present,tab click handler,True,PASS
 dashboard_chart_assets_exist,all referenced SVG assets,all present,PASS

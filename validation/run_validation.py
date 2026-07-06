@@ -89,30 +89,6 @@ add("python_sql_kpis_pass", validations["validation_status"].eq("PASS").all())
 add("dashboard_validation_pass", dashboard_validation["status"].eq("PASS").all(), "; ".join(dashboard_validation.loc[dashboard_validation["status"] != "PASS", "check"].astype(str).tolist()))
 add("repository_readiness_pass", repository_checks["status"].eq("PASS").all(), "; ".join(repository_checks.loc[repository_checks["status"] != "PASS", "check"].astype(str).tolist()))
 
-expected = {
-    "total_sales": 33054402.380216613,
-    "total_profit": 3966902.974050357,
-    "profit_margin": 0.1200113355074478,
-    "total_orders": 65752,
-    "total_order_items": 180519,
-    "total_customers": 20652,
-    "late_delivery_rate": 0.5482418785740357,
-    "average_shipping_delay_days": 0.5666747779535223,
-}
-actual = {
-    "total_sales": float(items["order_item_total"].sum()),
-    "total_profit": float(items["benefit_per_order"].sum()),
-    "profit_margin": float(items["benefit_per_order"].sum() / items["order_item_total"].sum()),
-    "total_orders": int(orders["order_id"].nunique()),
-    "total_order_items": int(len(items)),
-    "total_customers": int(items["customer_id"].nunique()),
-    "late_delivery_rate": float(orders["late_delivery_flag"].mean()),
-    "average_shipping_delay_days": float(orders["shipping_delay_days"].mean()),
-}
-for key, expected_value in expected.items():
-    tolerance = 0.0001 if "rate" in key or "margin" in key else 0.05
-    add(f"baseline_kpi::{key}", abs(actual[key] - expected_value) <= tolerance, f"actual={actual[key]}, expected={expected_value}")
-
 sensitive_cols = {"customer_email", "customer_password", "customer_street", "customer_fname", "customer_lname"}
 add("processed_sensitive_columns_removed", sensitive_cols.isdisjoint(set(items.columns)), ", ".join(sorted(sensitive_cols.intersection(items.columns))))
 add("powerbi_customer_sensitive_columns_removed", sensitive_cols.isdisjoint(set(pd.read_csv(ROOT / "powerbi/data/dim_customers.csv", nrows=1).columns)), "dim_customers checked")

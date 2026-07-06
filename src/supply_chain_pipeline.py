@@ -146,13 +146,32 @@ def profile_source_files() -> dict[str, pd.DataFrame]:
                 }
             )
         sample = df.head(5).copy()
+
+        sensitive_sample_tokens = {
+            "email",
+            "password",
+            "street",
+            "fname",
+            "lname",
+            "ip",
+            "url",
+            "image",
+            "latitude",
+            "longitude",
+            "zipcode",
+        }
+
         sensitive_sample_cols = [
             col
             for col in sample.columns
-            if any(token in slug(col) for token in ["email", "password", "street", "fname", "lname", "ip", "url", "image"])
+            if any(token in slug(col) for token in sensitive_sample_tokens)
         ]
+
         sample = sample.drop(columns=sensitive_sample_cols, errors="ignore")
-        sample_records[path.name] = sample.where(pd.notna(sample), None).to_dict(orient="records")
+        sample_records[path.name] = (
+            sample.where(pd.notna(sample), None)
+            .to_dict(orient="records")
+        )
 
     inventory = pd.DataFrame(inventory_rows)
     missing_profile = pd.DataFrame(missing_rows)
@@ -2378,6 +2397,7 @@ def create_validation_script() -> None:
     write_text(
         VALIDATION_DIR / "run_validation.py",
         r'''
+        import json
         from pathlib import Path
         import pandas as pd
 
@@ -2495,7 +2515,47 @@ def create_validation_script() -> None:
         sensitive_cols = {"customer_email", "customer_password", "customer_street", "customer_fname", "customer_lname"}
         add("processed_sensitive_columns_removed", sensitive_cols.isdisjoint(set(items.columns)), ", ".join(sorted(sensitive_cols.intersection(items.columns))))
         add("powerbi_customer_sensitive_columns_removed", sensitive_cols.isdisjoint(set(pd.read_csv(ROOT / "powerbi/data/dim_customers.csv", nrows=1).columns)), "dim_customers checked")
+        public_sample_path = ROOT / "outputs/source_sample_records.json"
 
+        public_sample_sensitive_tokens = {
+            "email",
+            "password",
+            "street",
+            "fname",
+            "lname",
+            "ip",
+            "url",
+            "image",
+            "latitude",
+            "longitude",
+            "zipcode",
+        }
+
+        public_sample_data = json.loads(
+            public_sample_path.read_text(encoding="utf-8")
+        )
+
+        public_sample_columns = {
+            column.lower()
+            for records in public_sample_data.values()
+            for record in records
+            for column in record.keys()
+        }
+
+        exposed_public_sample_columns = {
+            column
+            for column in public_sample_columns
+            if any(
+                token in column
+                for token in public_sample_sensitive_tokens
+            )
+        }
+
+        add(
+            "public_sample_sensitive_columns_removed",
+            len(exposed_public_sample_columns) == 0,
+            ", ".join(sorted(exposed_public_sample_columns)),
+        )
         cache_artifacts = [p.relative_to(ROOT).as_posix() for p in ROOT.rglob("*.pyc")]
         cache_artifacts.extend([p.relative_to(ROOT).as_posix() for p in ROOT.rglob("__pycache__") if p.is_dir()])
         add("cache_artifacts_absent", len(cache_artifacts) == 0, "; ".join(cache_artifacts))

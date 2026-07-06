@@ -58,6 +58,7 @@ baseline_kpi::late_delivery_rate,PASS,"actual=0.5482418785740357, expected=0.548
 baseline_kpi::average_shipping_delay_days,PASS,"actual=0.5666747779535223, expected=0.5666747779535223"
 processed_sensitive_columns_removed,PASS,
 powerbi_customer_sensitive_columns_removed,PASS,dim_customers checked
+public_sample_sensitive_columns_removed,PASS,
 cache_artifacts_absent,PASS,
 repository_intended_files_under_100_mib,PASS,
 dashboard_tab::Executive Overview,PASS,

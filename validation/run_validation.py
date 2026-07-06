@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 import pandas as pd
 
@@ -115,6 +116,47 @@ for key, expected_value in expected.items():
 sensitive_cols = {"customer_email", "customer_password", "customer_street", "customer_fname", "customer_lname"}
 add("processed_sensitive_columns_removed", sensitive_cols.isdisjoint(set(items.columns)), ", ".join(sorted(sensitive_cols.intersection(items.columns))))
 add("powerbi_customer_sensitive_columns_removed", sensitive_cols.isdisjoint(set(pd.read_csv(ROOT / "powerbi/data/dim_customers.csv", nrows=1).columns)), "dim_customers checked")
+public_sample_path = ROOT / "outputs/source_sample_records.json"
+
+public_sample_sensitive_tokens = {
+    "email",
+    "password",
+    "street",
+    "fname",
+    "lname",
+    "ip",
+    "url",
+    "image",
+    "latitude",
+    "longitude",
+    "zipcode",
+}
+
+public_sample_data = json.loads(
+    public_sample_path.read_text(encoding="utf-8")
+)
+
+public_sample_columns = {
+    column.lower()
+    for records in public_sample_data.values()
+    for record in records
+    for column in record.keys()
+}
+
+exposed_public_sample_columns = {
+    column
+    for column in public_sample_columns
+    if any(
+        token in column
+        for token in public_sample_sensitive_tokens
+    )
+}
+
+add(
+    "public_sample_sensitive_columns_removed",
+    len(exposed_public_sample_columns) == 0,
+    ", ".join(sorted(exposed_public_sample_columns)),
+)
 
 cache_artifacts = [p.relative_to(ROOT).as_posix() for p in ROOT.rglob("*.pyc")]
 cache_artifacts.extend([p.relative_to(ROOT).as_posix() for p in ROOT.rglob("__pycache__") if p.is_dir()])

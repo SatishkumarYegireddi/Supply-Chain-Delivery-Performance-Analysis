@@ -9,7 +9,7 @@ An end-to-end supply chain analytics project focused on late-delivery risk, logi
 Operations teams need to identify where late deliveries are concentrated and whether those operational risks overlap with material sales and profitability exposure. This analysis evaluates delivery performance at order grain while preserving order-item grain for commercial metrics.
 
 ## Dataset Source and Privacy
-This project uses **DataCo SMART SUPPLY CHAIN FOR BIG DATA ANALYSIS**, Version 5, published by Fabian Constante, Fernando Silva, and AntÃ³nio Pereira on Mendeley Data (2019), DOI `10.17632/8gx2fvg2k6.5`.
+This project uses **DataCo SMART SUPPLY CHAIN FOR BIG DATA ANALYSIS**, Version 5, published by Fabian Constante, Fernando Silva, and António Pereira on Mendeley Data (2019), DOI `10.17632/8gx2fvg2k6.5`.
 
 Dataset page: `https://data.mendeley.com/datasets/8gx2fvg2k6/5`
 

@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import pandas as pd
 
@@ -35,20 +35,13 @@ def derive_clean_dataset(raw_main: pd.DataFrame) -> pd.DataFrame:
     df["order_date_key"] = df["order_date"].dt.strftime("%Y%m%d")
     df["shipping_date_key"] = df["shipping_date"].dt.strftime("%Y%m%d")
 
-    def delay_group(value: float) -> str:
-        if pd.isna(value):
-            return "Unknown"
-        if value < 0:
-            return "Early"
-        if value == 0:
-            return "On schedule"
-        if value == 1:
-            return "1 day late"
-        if value <= 3:
-            return "2-3 days late"
-        return "4+ days late"
-
-    df["delay_severity"] = df["shipping_delay_days"].apply(delay_group)
+    delay_days = df["shipping_delay_days"]
+    df["delay_severity"] = pd.cut(
+        delay_days,
+        bins=[float("-inf"), -1, 0, 1, 3, float("inf")],
+        labels=["Early", "On schedule", "1 day late", "2-3 days late", "4+ days late"],
+    ).astype("string")
+    df["delay_severity"] = df["delay_severity"].fillna("Unknown")
     df["delivery_performance_group"] = df["late_delivery_flag"].map({1: "Late", 0: "Not late"})
     df["geography_key"] = (
         df[["market", "order_region", "order_country", "order_state", "order_city"]]
@@ -127,3 +120,4 @@ def order_level(df: pd.DataFrame) -> pd.DataFrame:
         }
     )
     return orders
+

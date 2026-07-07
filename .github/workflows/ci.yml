@@ -23,5 +23,8 @@ jobs:
       - name: Run unit tests
         run: python -m pytest tests
 
+      - name: Run data pipeline
+        run: python run_pipeline.py
+
       - name: Run project validation
         run: python validation/run_validation.py

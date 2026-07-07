@@ -5,32 +5,8 @@ import textwrap
 
 import pandas as pd
 
-from .common import DASHBOARD_DIR, DOCS_DIR, FIGURES_DIR, OUTPUTS_DIR, REPORTS_DIR, money, num, pct, write_text
+from .common import DASHBOARD_DIR, FIGURES_DIR, OUTPUTS_DIR, REPORTS_DIR, money, num, pct, write_text
 from .metrics import Metrics
-
-def create_dashboard_environment_doc() -> None:
-    write_text(
-        DOCS_DIR / "dashboard_environment_inspection.md",
-        """
-        # Dashboard Environment Inspection
-
-        Inspection was performed before selecting the final dashboard delivery technology.
-
-        ## Checked
-        - `PBIDesktop` command lookup
-        - `pbi-tools` command lookup
-        - `TabularEditor` and `TabularEditor3` command lookup
-        - Microsoft Store/Appx package lookup for Power BI
-        - Windows uninstall registry entries for Power BI, pbi-tools, and Tabular Editor
-        - Common install folders under Program Files and user-local app locations
-
-        ## Result
-        Power BI Desktop, PBIP command-line tooling, pbi-tools, and Tabular Editor were not found as accessible local tooling in this environment.
-
-        ## Delivery Decision
-        Because native `.pbix` or `.pbip` creation was not technically available, the project delivers a finished standalone HTML analytics dashboard generated from the validated project data. The dashboard is recruiter-ready, requires no external server, and does not require the user to manually construct visuals.
-        """,
-    )
 
 def html_table(df: pd.DataFrame, cols: list[str], max_rows: int = 10) -> str:
     rows = []
@@ -156,7 +132,7 @@ def create_html_dashboard(metrics: Metrics, eda: dict[str, pd.DataFrame]) -> Non
             <div class="panel">
               <h2>Analytical Guardrails</h2>
               <p class="note">This dashboard avoids unsupported causal claims. Late delivery findings are prioritization signals for review by market, region, category, and shipping mode.</p>
-              <p class="note">Power BI model guidance: order-level measures use `fact_orders` plus an explicit item-filtered order scope for product/category selections.</p>
+              <p class="note">Dashboard measures follow the documented filter context for order-level delivery and item-level commercial KPIs.</p>
               <p class="note">Validation: Python and SQL KPI reconciliation passed with zero material differences.</p>
             </div>
           </div>
@@ -230,6 +206,6 @@ def create_dashboard_preview(metrics: Metrics) -> None:
 <rect x="590" y="145" width="240" height="105" rx="14" fill="#f8fafc" stroke="#e2e8f0"/><text x="610" y="178" font-size="15" fill="#667085">LATE DELIVERY RATE</text><text x="610" y="222" font-size="28" font-weight="700" fill="#172033">{pct(metrics.late_delivery_rate)}</text>
 <rect x="850" y="145" width="240" height="105" rx="14" fill="#f8fafc" stroke="#e2e8f0"/><text x="870" y="178" font-size="15" fill="#667085">TOTAL ORDERS</text><text x="870" y="222" font-size="28" font-weight="700" fill="#172033">{metrics.total_orders:,}</text>
 <rect x="70" y="285" width="520" height="245" rx="14" fill="#f8fafc" stroke="#e2e8f0"/><text x="95" y="325" font-size="19" font-weight="700" fill="#172033">Operational risk</text><text x="95" y="365" font-size="17" fill="#475467">Average shipping delay</text><text x="500" y="365" text-anchor="end" font-size="22" font-weight="700" fill="#172033">{num(metrics.average_shipping_delay_days)} days</text><text x="95" y="410" font-size="17" fill="#475467">Cancellation rate</text><text x="500" y="410" text-anchor="end" font-size="22" font-weight="700" fill="#172033">{pct(metrics.cancellation_rate)}</text><text x="95" y="455" font-size="17" fill="#475467">Order items analyzed</text><text x="500" y="455" text-anchor="end" font-size="22" font-weight="700" fill="#172033">{metrics.total_order_items:,}</text>
-<rect x="610" y="285" width="480" height="245" rx="14" fill="#f8fafc" stroke="#e2e8f0"/><text x="635" y="325" font-size="19" font-weight="700" fill="#172033">Analysis coverage</text><text x="635" y="370" font-size="17" fill="#475467">Delivery &amp; logistics performance</text><rect x="635" y="388" width="380" height="10" rx="5" fill="#dbe4f0"/><rect x="635" y="388" width="330" height="10" rx="5" fill="#667085"/><text x="635" y="435" font-size="17" fill="#475467">Market &amp; commercial performance</text><rect x="635" y="453" width="380" height="10" rx="5" fill="#dbe4f0"/><rect x="635" y="453" width="290" height="10" rx="5" fill="#667085"/><text x="635" y="500" font-size="14" fill="#667085">Interactive HTML dashboard contains four analytical tabs.</text>
+<rect x="610" y="285" width="480" height="245" rx="14" fill="#f8fafc" stroke="#e2e8f0"/><text x="635" y="325" font-size="19" font-weight="700" fill="#172033">Analysis coverage</text><text x="635" y="370" font-size="17" fill="#475467">Delivery &amp; logistics performance</text><rect x="635" y="388" width="380" height="10" rx="5" fill="#dbe4f0"/><rect x="635" y="388" width="330" height="10" rx="5" fill="#667085"/><text x="635" y="435" font-size="17" fill="#475467">Market &amp; commercial performance</text><rect x="635" y="453" width="380" height="10" rx="5" fill="#dbe4f0"/><rect x="635" y="453" width="290" height="10" rx="5" fill="#667085"/><text x="635" y="500" font-size="14" fill="#667085">HTML dashboard contains four analytical tabs.</text>
 </g></svg>"""
     write_text(REPORTS_DIR / "figures" / "dashboard_overview.svg", preview)

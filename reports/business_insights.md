@@ -1,35 +1,19 @@
 # Business Insights
 
-## 1. Late Delivery Is A Material Operating Pattern
-Finding: 54.8% of distinct orders are flagged late, with an average delay of 0.6 days versus the scheduled duration.
+## 1. Late Delivery Is A Recurring Operating Pattern
+Late delivery is not isolated to a small exception set: 54.8% of distinct orders are flagged late, and the average delay is 0.6 days versus the scheduled duration. That level of exposure supports routine monitoring by shipping mode, market, and region, with attention on segments where high late rates also carry meaningful order volume.
 
-Business significance: Late delivery is broad enough to require operational monitoring rather than one-off exception handling.
-
-Recommended action: Monitor late delivery rate weekly by shipping mode, market, and region; investigate segments where high late rates overlap with high order volume.
-
-Limitation: The dataset does not include carrier, facility, inventory, or staffing variables, so it does not prove root causes.
+The dataset does not include carrier, facility, inventory, or staffing variables, so the result should be treated as a prioritization signal rather than evidence of root cause.
 
 ## 2. Shipping Mode Performance Requires Service-Level Review
-Finding: `First Class` has the highest late-delivery rate at 95.3%.
-
-Business significance: The shipping mode promise may not consistently translate into delivered performance.
-
-Recommended action: Compare mode-level promised durations with actual cycle times and evaluate whether scheduling rules or carrier choices need review.
+`First Class` stands out with the highest late-delivery rate at 95.3%. The practical review is to compare promised mode-level durations with actual cycle times, then test whether scheduling rules or carrier choices are contributing to the gap.
 
 ## 3. High-Volume Regional Risk Should Be Prioritized
-Finding: `Africa / Central Africa` combines 556 orders with a 57.6% late delivery rate.
-
-Business significance: Operational fixes in this segment would affect meaningful order volume.
-
-Recommended action: Prioritize this region for logistics review, then compare route, carrier, fulfillment, and scheduling assumptions outside this dataset.
+Among high-volume regions, `Africa / Central Africa` combines 556 orders with a 57.6% late delivery rate. It is a stronger candidate for logistics review than a low-volume outlier because any improvement would apply to a meaningful number of orders.
 
 ## 4. Commercial Exposure And Profitability Need Joint Review
-Finding: `Shop By Sport` is a high-sales category with a 11.0% profit margin.
-
-Business significance: Sales volume alone can hide margin risk.
-
-Recommended action: Review pricing, discounting, and fulfillment economics for high-sales low-margin categories.
+`Shop By Sport` is a high-sales category with a 11.0% profit margin. It should be reviewed with pricing, discounting, and fulfillment economics in view, because the sales total alone does not show whether the category is contributing proportionate profit.
 
 
 ## Profitability Risk Segment
-`Europe / Western Europe / DVDs` is the largest loss-making segment among segments with at least 50 orders, with $-491.1 profit on $17,470.3 net sales. Recommended action: review discounting, product cost, fulfillment cost, or returns exposure for this segment before scaling volume.
+`Europe / Western Europe / DVDs` is the largest loss-making segment among segments with at least 50 orders, with $-491.1 profit on $17,470.3 net sales. Before adding volume in this segment, discounting, product cost, fulfillment cost, and returns exposure would need closer review.

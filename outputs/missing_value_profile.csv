@@ -1,33 +1,33 @@
 filename,column_name,missing_count,missing_pct,inferred_dtype,unique_values
-DataCoSupplyChainDataset.csv,Type,0,0.0,object,4
+DataCoSupplyChainDataset.csv,Type,0,0.0,str,4
 DataCoSupplyChainDataset.csv,Days for shipping (real),0,0.0,int64,7
 DataCoSupplyChainDataset.csv,Days for shipment (scheduled),0,0.0,int64,4
 DataCoSupplyChainDataset.csv,Benefit per order,0,0.0,float64,21998
 DataCoSupplyChainDataset.csv,Sales per customer,0,0.0,float64,2927
-DataCoSupplyChainDataset.csv,Delivery Status,0,0.0,object,4
+DataCoSupplyChainDataset.csv,Delivery Status,0,0.0,str,4
 DataCoSupplyChainDataset.csv,Late_delivery_risk,0,0.0,int64,2
 DataCoSupplyChainDataset.csv,Category Id,0,0.0,int64,51
-DataCoSupplyChainDataset.csv,Category Name,0,0.0,object,50
-DataCoSupplyChainDataset.csv,Customer City,0,0.0,object,563
-DataCoSupplyChainDataset.csv,Customer Country,0,0.0,object,2
-DataCoSupplyChainDataset.csv,Customer Email,0,0.0,object,1
-DataCoSupplyChainDataset.csv,Customer Fname,0,0.0,object,782
+DataCoSupplyChainDataset.csv,Category Name,0,0.0,str,50
+DataCoSupplyChainDataset.csv,Customer City,0,0.0,str,563
+DataCoSupplyChainDataset.csv,Customer Country,0,0.0,str,2
+DataCoSupplyChainDataset.csv,Customer Email,0,0.0,str,1
+DataCoSupplyChainDataset.csv,Customer Fname,0,0.0,str,782
 DataCoSupplyChainDataset.csv,Customer Id,0,0.0,int64,20652
-DataCoSupplyChainDataset.csv,Customer Lname,8,4.431666472781258e-05,object,1109
-DataCoSupplyChainDataset.csv,Customer Password,0,0.0,object,1
-DataCoSupplyChainDataset.csv,Customer Segment,0,0.0,object,3
-DataCoSupplyChainDataset.csv,Customer State,0,0.0,object,46
-DataCoSupplyChainDataset.csv,Customer Street,0,0.0,object,7458
+DataCoSupplyChainDataset.csv,Customer Lname,8,4.431666472781258e-05,str,1109
+DataCoSupplyChainDataset.csv,Customer Password,0,0.0,str,1
+DataCoSupplyChainDataset.csv,Customer Segment,0,0.0,str,3
+DataCoSupplyChainDataset.csv,Customer State,0,0.0,str,46
+DataCoSupplyChainDataset.csv,Customer Street,0,0.0,str,7458
 DataCoSupplyChainDataset.csv,Customer Zipcode,3,1.661874927292972e-05,float64,995
 DataCoSupplyChainDataset.csv,Department Id,0,0.0,int64,11
-DataCoSupplyChainDataset.csv,Department Name,0,0.0,object,11
+DataCoSupplyChainDataset.csv,Department Name,0,0.0,str,11
 DataCoSupplyChainDataset.csv,Latitude,0,0.0,float64,11250
 DataCoSupplyChainDataset.csv,Longitude,0,0.0,float64,4487
-DataCoSupplyChainDataset.csv,Market,0,0.0,object,5
-DataCoSupplyChainDataset.csv,Order City,0,0.0,object,3597
-DataCoSupplyChainDataset.csv,Order Country,0,0.0,object,164
+DataCoSupplyChainDataset.csv,Market,0,0.0,str,5
+DataCoSupplyChainDataset.csv,Order City,0,0.0,str,3597
+DataCoSupplyChainDataset.csv,Order Country,0,0.0,str,164
 DataCoSupplyChainDataset.csv,Order Customer Id,0,0.0,int64,20652
-DataCoSupplyChainDataset.csv,order date (DateOrders),0,0.0,object,65752
+DataCoSupplyChainDataset.csv,order date (DateOrders),0,0.0,str,65752
 DataCoSupplyChainDataset.csv,Order Id,0,0.0,int64,65752
 DataCoSupplyChainDataset.csv,Order Item Cardprod Id,0,0.0,int64,118
 DataCoSupplyChainDataset.csv,Order Item Discount,0,0.0,float64,1017
@@ -39,26 +39,26 @@ DataCoSupplyChainDataset.csv,Order Item Quantity,0,0.0,int64,5
 DataCoSupplyChainDataset.csv,Sales,0,0.0,float64,193
 DataCoSupplyChainDataset.csv,Order Item Total,0,0.0,float64,2927
 DataCoSupplyChainDataset.csv,Order Profit Per Order,0,0.0,float64,21998
-DataCoSupplyChainDataset.csv,Order Region,0,0.0,object,23
-DataCoSupplyChainDataset.csv,Order State,0,0.0,object,1089
-DataCoSupplyChainDataset.csv,Order Status,0,0.0,object,9
+DataCoSupplyChainDataset.csv,Order Region,0,0.0,str,23
+DataCoSupplyChainDataset.csv,Order State,0,0.0,str,1089
+DataCoSupplyChainDataset.csv,Order Status,0,0.0,str,9
 DataCoSupplyChainDataset.csv,Order Zipcode,155679,0.8623967560201419,float64,609
 DataCoSupplyChainDataset.csv,Product Card Id,0,0.0,int64,118
 DataCoSupplyChainDataset.csv,Product Category Id,0,0.0,int64,51
 DataCoSupplyChainDataset.csv,Product Description,180519,1.0,float64,0
-DataCoSupplyChainDataset.csv,Product Image,0,0.0,object,118
-DataCoSupplyChainDataset.csv,Product Name,0,0.0,object,118
+DataCoSupplyChainDataset.csv,Product Image,0,0.0,str,118
+DataCoSupplyChainDataset.csv,Product Name,0,0.0,str,118
 DataCoSupplyChainDataset.csv,Product Price,0,0.0,float64,75
 DataCoSupplyChainDataset.csv,Product Status,0,0.0,int64,1
-DataCoSupplyChainDataset.csv,shipping date (DateOrders),0,0.0,object,63701
-DataCoSupplyChainDataset.csv,Shipping Mode,0,0.0,object,4
-DescriptionDataCoSupplyChain.csv,FIELDS,0,0.0,object,52
-DescriptionDataCoSupplyChain.csv,DESCRIPTION,0,0.0,object,51
-tokenized_access_logs.csv,Product,0,0.0,object,76
-tokenized_access_logs.csv,Category,0,0.0,object,33
-tokenized_access_logs.csv,Date,0,0.0,object,160815
-tokenized_access_logs.csv,Month,0,0.0,object,5
+DataCoSupplyChainDataset.csv,shipping date (DateOrders),0,0.0,str,63701
+DataCoSupplyChainDataset.csv,Shipping Mode,0,0.0,str,4
+DescriptionDataCoSupplyChain.csv,FIELDS,0,0.0,str,52
+DescriptionDataCoSupplyChain.csv,DESCRIPTION,0,0.0,str,51
+tokenized_access_logs.csv,Product,0,0.0,str,76
+tokenized_access_logs.csv,Category,0,0.0,str,33
+tokenized_access_logs.csv,Date,0,0.0,str,160815
+tokenized_access_logs.csv,Month,0,0.0,str,5
 tokenized_access_logs.csv,Hour,0,0.0,int64,24
-tokenized_access_logs.csv,Department,0,0.0,object,6
-tokenized_access_logs.csv,ip,0,0.0,object,3340
-tokenized_access_logs.csv,url,0,0.0,object,152
+tokenized_access_logs.csv,Department,0,0.0,str,6
+tokenized_access_logs.csv,ip,0,0.0,str,3340
+tokenized_access_logs.csv,url,0,0.0,str,152

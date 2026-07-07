@@ -1,7 +1,7 @@
 check,status,details
 repository_intended_files_under_100_mib,PASS,
 python_cache_artifacts_absent,PASS,
-dashboard_artifact_versionable,PASS,dashboard/supply_chain_delivery_dashboard.html size=11399 bytes
+dashboard_artifact_versionable,PASS,dashboard/supply_chain_delivery_dashboard.html size=11358 bytes
 raw_archive_ignored,PASS,archive.zip size=26920609 bytes
 large_processed_csv_ignored,PASS,data/processed/supply_chain_order_items.csv
 powerbi_generated_data_ignored,PASS,powerbi/data/*.csv

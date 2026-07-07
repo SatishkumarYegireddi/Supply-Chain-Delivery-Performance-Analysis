@@ -1,4 +1,4 @@
-# Dashboard Blueprint
+# Power BI Report Layout Blueprint
 
 ## Page 1: Executive Overview
 Valid measures: Total Sales, Total Profit, Profit Margin, Total Orders, Late Delivery Rate, Average Shipping Delay, Cancellation Rate.

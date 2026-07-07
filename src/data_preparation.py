@@ -7,7 +7,13 @@ from .common import slug
 def normalize_columns(df: pd.DataFrame) -> pd.DataFrame:
     renamed = {col: slug(col) for col in df.columns}
     result = df.rename(columns=renamed).copy()
-    for col in result.select_dtypes(include="object").columns:
+    text_columns = [
+        col
+        for col in result.columns
+        if pd.api.types.is_object_dtype(result[col].dtype)
+        or pd.api.types.is_string_dtype(result[col].dtype)
+    ]
+    for col in text_columns:
         result[col] = result[col].astype("string").str.strip()
     return result
 

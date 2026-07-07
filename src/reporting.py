@@ -3,10 +3,9 @@ from __future__ import annotations
 import pandas as pd
 
 from .common import ACCESS_LOG_SOURCE, DESCRIPTION_SOURCE, DOCS_DIR, MAIN_SOURCE, OUTPUTS_DIR, PROJECT_TITLE, REPORTS_DIR, ROOT, md_table, money, num, pct, write_text
-from .dashboard_outputs import create_dashboard_environment_doc, create_dashboard_preview, create_html_dashboard
+from .dashboard_outputs import create_dashboard_preview, create_html_dashboard
 from .metrics import Metrics
 from .powerbi_outputs import create_powerbi_docs
-from .repository_outputs import create_github_data_strategy
 
 def create_docs(
     raw_data: dict[str, pd.DataFrame],
@@ -205,7 +204,7 @@ def create_docs(
         Across {metrics.total_orders:,} distinct orders, the late delivery rate is {pct(metrics.late_delivery_rate)} and average shipping delay is {num(metrics.average_shipping_delay_days)} days.
 
         ## Shipping Mode Performance
-        `{top_shipping["shipping_mode"]}` has the highest late-delivery rate at {pct(top_shipping["late_delivery_rate"])} across {int(top_shipping["total_orders"]):,} orders. This indicates that promised service level and actual performance should be reviewed by mode rather than assuming faster modes always perform better.
+        `{top_shipping["shipping_mode"]}` has the highest late-delivery rate at {pct(top_shipping["late_delivery_rate"])} across {int(top_shipping["total_orders"]):,} orders. Mode-level performance is therefore worth reading as an observed risk pattern, not as a simple proxy for faster fulfillment.
 
         ## Geographic Performance
         `{top_market_volume["market"]}` has the highest order volume with {int(top_market_volume["total_orders"]):,} orders. `{highest_market_late["market"]}` has the highest market-level late delivery rate at {pct(highest_market_late["late_delivery_rate"])}.
@@ -218,7 +217,7 @@ def create_docs(
         A high-sales, low-margin category to review is `{low_profit_category["category_name"]}`, with {money(low_profit_category["total_sales"])} in net sales and a {pct(low_profit_category["profit_margin"])} profit margin.
 
         ## Time Analysis
-        The lowest monthly late delivery rate appears in {monthly_best["order_year_month"]} at {pct(monthly_best["late_delivery_rate"])}. The highest monthly late delivery rate appears in {monthly_worst["order_year_month"]} at {pct(monthly_worst["late_delivery_rate"])}.
+        Monthly late-delivery rates stay in a fairly narrow band: the lowest month is {monthly_best["order_year_month"]} at {pct(monthly_best["late_delivery_rate"])}, while the highest is {monthly_worst["order_year_month"]} at {pct(monthly_worst["late_delivery_rate"])}.
 
         ## Figures
         - `reports/figures/late_delivery_rate_by_shipping_mode.svg`
@@ -284,7 +283,7 @@ def create_docs(
     if worst_loss is not None:
         business_extra = f"""
         ## Profitability Risk Segment
-        `{worst_loss["market"]} / {worst_loss["order_region"]} / {worst_loss["category_name"]}` is the largest loss-making segment among segments with at least 50 orders, with {money(worst_loss["total_profit"])} profit on {money(worst_loss["total_sales"])} net sales. Recommended action: review discounting, product cost, fulfillment cost, or returns exposure for this segment before scaling volume.
+        `{worst_loss["market"]} / {worst_loss["order_region"]} / {worst_loss["category_name"]}` is the largest loss-making segment among segments with at least 50 orders, with {money(worst_loss["total_profit"])} profit on {money(worst_loss["total_sales"])} net sales. Before adding volume in this segment, discounting, product cost, fulfillment cost, and returns exposure would need closer review.
         """
 
     write_text(
@@ -292,35 +291,19 @@ def create_docs(
         f"""
         # Business Insights
 
-        ## 1. Late Delivery Is A Material Operating Pattern
-        Finding: {pct(metrics.late_delivery_rate)} of distinct orders are flagged late, with an average delay of {num(metrics.average_shipping_delay_days)} days versus the scheduled duration.
+        ## 1. Late Delivery Is A Recurring Operating Pattern
+        Late delivery is not isolated to a small exception set: {pct(metrics.late_delivery_rate)} of distinct orders are flagged late, and the average delay is {num(metrics.average_shipping_delay_days)} days versus the scheduled duration. That level of exposure supports routine monitoring by shipping mode, market, and region, with attention on segments where high late rates also carry meaningful order volume.
 
-        Business significance: Late delivery is broad enough to require operational monitoring rather than one-off exception handling.
-
-        Recommended action: Monitor late delivery rate weekly by shipping mode, market, and region; investigate segments where high late rates overlap with high order volume.
-
-        Limitation: The dataset does not include carrier, facility, inventory, or staffing variables, so it does not prove root causes.
+        The dataset does not include carrier, facility, inventory, or staffing variables, so the result should be treated as a prioritization signal rather than evidence of root cause.
 
         ## 2. Shipping Mode Performance Requires Service-Level Review
-        Finding: `{top_shipping["shipping_mode"]}` has the highest late-delivery rate at {pct(top_shipping["late_delivery_rate"])}.
-
-        Business significance: The shipping mode promise may not consistently translate into delivered performance.
-
-        Recommended action: Compare mode-level promised durations with actual cycle times and evaluate whether scheduling rules or carrier choices need review.
+        `{top_shipping["shipping_mode"]}` stands out with the highest late-delivery rate at {pct(top_shipping["late_delivery_rate"])}. The practical review is to compare promised mode-level durations with actual cycle times, then test whether scheduling rules or carrier choices are contributing to the gap.
 
         ## 3. High-Volume Regional Risk Should Be Prioritized
-        Finding: `{top_region_risk["market"]} / {top_region_risk["order_region"]}` combines {int(top_region_risk["total_orders"]):,} orders with a {pct(top_region_risk["late_delivery_rate"])} late delivery rate.
-
-        Business significance: Operational fixes in this segment would affect meaningful order volume.
-
-        Recommended action: Prioritize this region for logistics review, then compare route, carrier, fulfillment, and scheduling assumptions outside this dataset.
+        Among high-volume regions, `{top_region_risk["market"]} / {top_region_risk["order_region"]}` combines {int(top_region_risk["total_orders"]):,} orders with a {pct(top_region_risk["late_delivery_rate"])} late delivery rate. It is a stronger candidate for logistics review than a low-volume outlier because any improvement would apply to a meaningful number of orders.
 
         ## 4. Commercial Exposure And Profitability Need Joint Review
-        Finding: `{low_profit_category["category_name"]}` is a high-sales category with a {pct(low_profit_category["profit_margin"])} profit margin.
-
-        Business significance: Sales volume alone can hide margin risk.
-
-        Recommended action: Review pricing, discounting, and fulfillment economics for high-sales low-margin categories.
+        `{low_profit_category["category_name"]}` is a high-sales category with a {pct(low_profit_category["profit_margin"])} profit margin. It should be reviewed with pricing, discounting, and fulfillment economics in view, because the sales total alone does not show whether the category is contributing proportionate profit.
 
         {business_extra}
         """,
@@ -331,7 +314,7 @@ def create_docs(
         f"""
         # Executive Summary
 
-        This portfolio case study analyzes {metrics.total_orders:,} orders and {metrics.total_order_items:,} order items from the DataCo supply chain dataset. The project focuses on delivery performance, commercial exposure, profitability, and dashboard-ready KPI governance.
+        This portfolio case study analyzes {metrics.total_orders:,} orders and {metrics.total_order_items:,} order items from the DataCo supply chain dataset. It combines order-level delivery metrics with order-item sales and profit measures so logistics performance can be read alongside commercial exposure.
 
         Headline results:
         - Net sales: {money(metrics.total_sales)}
@@ -341,50 +324,13 @@ def create_docs(
         - Average shipping delay: {num(metrics.average_shipping_delay_days)} days
         - Cancellation rate: {pct(metrics.cancellation_rate)}
 
-        The main operational takeaway is that delivery risk should be managed at the intersection of shipping mode, market, and region. The main commercial takeaway is that category and regional sales should be interpreted with profitability context, because high sales do not always imply strong margin.
+        At a decision level, the analysis points to two monitoring needs: late-delivery performance should be tracked across shipping mode and geography, and sales concentration should be reviewed with profit margin rather than revenue alone.
         """,
     )
 
     create_powerbi_docs(metrics, eda, validation)
-    create_dashboard_environment_doc()
     create_html_dashboard(metrics, eda)
-    create_portfolio_docs(metrics, eda)
-    create_github_data_strategy()
     create_readme(metrics, eda, validation)
-    create_project_status(df, orders, metrics, validation)
-
-def create_portfolio_docs(metrics: Metrics, eda: dict[str, pd.DataFrame]) -> None:
-    write_text(
-        DOCS_DIR / "github_repository_description.md",
-        """
-        # GitHub Repository Description
-
-        End-to-end supply chain delivery performance analytics portfolio project using Python, pandas, SQLite, data quality validation, KPI governance, SQL analysis, Power BI model artifacts, and a finished interactive HTML dashboard.
-
-        ## Suggested Topics
-        supply-chain, logistics, data-analysis, pandas, sql, sqlite, power-bi, business-intelligence, data-quality, portfolio-project, analytics-engineering
-        """,
-    )
-    write_text(
-        DOCS_DIR / "resume_bullets.md",
-        f"""
-        # Resume Bullet Options
-
-        - Built an end-to-end supply chain delivery analytics project in Python, pandas, and SQLite, profiling {metrics.total_order_items:,} order-item records and validating core KPIs across Python and SQL.
-        - Designed grain-aware delivery and profitability KPIs for {metrics.total_orders:,} orders, including late delivery rate, average shipping delay, profit margin, and cancellation rate, with Power BI model documentation and DAX measures.
-        - Developed a recruiter-ready analytics portfolio case study with automated data extraction, cleaning, EDA, SQL analysis, KPI reconciliation, an interactive HTML dashboard, and business recommendations.
-        """,
-    )
-    write_text(
-        DOCS_DIR / "linkedin_project_description.md",
-        f"""
-        # LinkedIn Project Description
-
-        I completed an end-to-end Supply Chain Delivery Performance Analysis portfolio project using Python, pandas, and SQLite. The project starts from a local raw ZIP archive, profiles and cleans {metrics.total_order_items:,} order-item records, defines grain-aware KPIs, validates Python metrics against SQL, documents a Power BI semantic model, and delivers a finished interactive HTML dashboard.
-
-        The analysis focuses on late delivery performance, shipping mode effectiveness, regional operational risk, profitability, and high-sales low-margin segments. It is structured as a practical business analytics case study rather than a generic notebook.
-        """,
-    )
 
 def create_readme(metrics: Metrics, eda: dict[str, pd.DataFrame], validation: pd.DataFrame) -> None:
     create_dashboard_preview(metrics)
@@ -392,7 +338,7 @@ def create_readme(metrics: Metrics, eda: dict[str, pd.DataFrame], validation: pd
 # {PROJECT_TITLE}
 
 ## Overview
-An end-to-end supply chain analytics project focused on late-delivery risk, logistics performance, sales, and profitability. The workflow combines Python data preparation, grain-aware KPI design, SQLite SQL analysis, Python-to-SQL reconciliation, Power BI model specifications, automated validation, and a standalone interactive HTML dashboard.
+An end-to-end supply chain analytics project focused on late-delivery risk, logistics performance, sales, and profitability. The workflow combines Python data preparation, grain-aware KPI design, SQLite SQL analysis, Python-to-SQL reconciliation, Power BI model specifications, automated validation, and a standalone multi-tab HTML dashboard.
 
 ![Dashboard overview](reports/figures/dashboard_overview.svg)
 
@@ -428,13 +374,13 @@ The source contains `DataCoSupplyChainDataset.csv`, `DescriptionDataCoSupplyChai
 6. Build a SQLite analytical layer and execute SQL KPI/business queries.
 7. Reconcile Python and SQL KPI results.
 8. Export a two-fact Power BI model specification and DAX library.
-9. Generate the interactive HTML dashboard and static GitHub preview.
-10. Run automated dashboard, privacy, KPI, and repository-readiness checks.
+9. Generate the multi-tab HTML dashboard and static GitHub preview.
+10. Run automated dashboard, privacy, and KPI checks.
 
 ## Data Model and Grain
 - `fact_order_items`: {metrics.total_order_items:,} rows; one row per `order_item_id`. Used for sales, profit, product, and category analysis.
 - `fact_orders`: {metrics.total_orders:,} rows; one row per `order_id`. Used for late-delivery, shipping-delay, cancellation, and order-count KPIs.
-- Product/category-filtered order KPIs use explicit `TREATAS` order-scope DAX logic to avoid broad bidirectional filtering.
+- Product/category-filtered order KPIs follow the documented Power BI filter context for order-level delivery metrics.
 
 ## Key Business Insights
 - {pct(metrics.late_delivery_rate)} of distinct orders are late, making delivery reliability the primary operational risk in this dataset.
@@ -444,7 +390,7 @@ The source contains `DataCoSupplyChainDataset.csv`, `DescriptionDataCoSupplyChai
 
 Detailed findings are in `reports/business_insights.md` and `reports/executive_summary.md`.
 
-## Interactive Dashboard
+## HTML Dashboard
 Open `dashboard/supply_chain_delivery_dashboard.html` directly in a browser. No local server is required. The dashboard contains four tabs:
 - Executive Overview
 - Delivery & Logistics Performance
@@ -457,7 +403,7 @@ Headline KPI cards and major chart aggregates are reconciled in `outputs/dashboa
 The `sql/` directory contains schema, view, KPI, data-quality, and business-analysis queries. Executed query outputs are stored in `outputs/sql/`. Order-level delivery metrics are calculated from a distinct-order analytical view and reconciled against Python results in `outputs/kpi_validation.csv`.
 
 ## Power BI Model Artifacts
-The `powerbi/` directory contains the model specification, DAX measures, dashboard blueprint, build guide, style guide, field dictionary, and theme JSON. A `.pbix` file is **not** included or claimed. The completed interactive deliverable is the standalone HTML dashboard; the Power BI files document an implementation-ready semantic model and measure design.
+The `powerbi/` directory contains the model specification, DAX measures, report layout blueprint, build guide, style guide, field dictionary, and theme JSON. A `.pbix` file is **not** included or claimed. The completed browser-based deliverable is the standalone multi-tab HTML dashboard; the Power BI files document an implementation-ready semantic model and measure design.
 
 ## Tech Stack
 - Python and pandas
@@ -468,7 +414,7 @@ The `powerbi/` directory contains the model specification, DAX measures, dashboa
 
 ## Project Structure
 ```text
-dashboard/                Interactive HTML dashboard
+dashboard/                Multi-tab HTML dashboard
 data/raw/                 Local source extracts (Git-ignored)
 data/processed/           Generated analytical datasets (Git-ignored)
 docs/                     Data, KPI, quality, SQL, and validation documentation
@@ -497,53 +443,15 @@ The pipeline regenerates raw extracts, processed datasets, SQLite outputs, Power
 - Python vs SQL KPI reconciliation: {"PASS" if validation["validation_status"].eq("PASS").all() else "FAIL"}
 - Dashboard KPI/chart validation: PASS
 - Automated validation suite: PASS
-- Repository-readiness checks: PASS
 
-See `validation/validation_results.csv`, `outputs/kpi_validation.csv`, `outputs/dashboard_validation.csv`, and `outputs/repository_readiness_checks.csv`.
+See `validation/validation_results.csv`, `outputs/kpi_validation.csv`, and `outputs/dashboard_validation.csv`.
 
 ## Limitations
 - This is a portfolio case study based on a public historical dataset, not a commissioned company engagement.
 - The data does not include carrier, warehouse, inventory, or staffing features; recommendations are prioritization-oriented rather than causal.
 - Clickstream access logs are excluded from the delivery model because no reliable order-level join is available.
 - Postal-code analysis is de-emphasized because order ZIP code has high missingness.
-- No `.pbix` file is included.
 
 ## Conclusion
 The analysis shows how order-grain logistics KPIs and item-grain commercial metrics can be combined without double counting. The resulting workflow identifies delivery-risk segments, quantifies commercial exposure, and validates the same headline KPIs across Python, SQL, and dashboard outputs.
-""")
-
-def create_project_status(df: pd.DataFrame, orders: pd.DataFrame, metrics: Metrics, validation: pd.DataFrame) -> None:
-    status = "PASS" if validation["validation_status"].eq("PASS").all() else "FAIL"
-    write_text(ROOT / "PROJECT_STATUS.md", f"""
-# Project Status
-
-## Status
-Analysis and validation are complete. The remaining step is repository publication.
-
-## Validated Scope
-- Order-item rows: {len(df):,}
-- Distinct orders: {len(orders):,}
-- Distinct customers: {df["customer_id"].nunique():,}
-- Date range: {orders["order_year_month"].min()} to {orders["order_year_month"].max()}
-- Python vs SQL KPI reconciliation: {status}
-- Dashboard KPI and chart validation: PASS
-- Automated project validation: PASS
-- Repository-readiness validation: PASS
-
-## Analytical Decisions
-- Sales and profit are calculated at order-item grain.
-- Delivery, delay, cancellation, and order counts are calculated at distinct-order grain.
-- Access logs are excluded from the primary delivery model because no reliable order-level join exists.
-- Sensitive customer fields are excluded from processed and Power BI-ready outputs.
-- Raw and large generated datasets remain local and are excluded by `.gitignore`.
-
-## Deliverables
-- Reproducible Python pipeline
-- SQLite analytical layer and SQL result exports
-- EDA and business-insight reports
-- Interactive four-tab HTML dashboard
-- Power BI semantic-model specification, DAX library, theme, and implementation documentation
-- Automated KPI, dashboard, privacy, and repository validation
-
-A `.pbix` file is not included or claimed.
 """)

@@ -102,12 +102,6 @@ def create_sql_layer(df: pd.DataFrame) -> dict[str, float]:
     """
     conn.executescript(views_sql)
 
-    schema_sql = """
-    -- SQLite analytical layer generated from data/processed/supply_chain_order_items.csv
-    -- Grain: one row per order item in order_items.
-    -- v_order_level rolls order-item records to one row per order for delivery and cancellation KPIs.
-    """
-    write_text(SQL_DIR / "schema.sql", schema_sql)
     write_text(SQL_DIR / "views.sql", views_sql)
 
     queries = {

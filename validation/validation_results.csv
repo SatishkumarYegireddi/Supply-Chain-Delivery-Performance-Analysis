@@ -24,14 +24,12 @@ required_file::powerbi/dashboard_build_guide.md,PASS,powerbi/dashboard_build_gui
 required_file::powerbi/style_guide.md,PASS,powerbi/style_guide.md
 required_file::dashboard/supply_chain_delivery_dashboard.html,PASS,dashboard/supply_chain_delivery_dashboard.html
 required_file::README.md,PASS,README.md
-required_file::PROJECT_STATUS.md,PASS,PROJECT_STATUS.md
+required_file::docs/dataset_relevance.md,PASS,docs/dataset_relevance.md
+required_file::docs/data_cleaning_rules.md,PASS,docs/data_cleaning_rules.md
+required_file::docs/kpi_dictionary.md,PASS,docs/kpi_dictionary.md
+required_file::docs/sql_analysis.md,PASS,docs/sql_analysis.md
+required_file::docs/validation_report.md,PASS,docs/validation_report.md
 required_file::docs/filter_propagation_validation.md,PASS,docs/filter_propagation_validation.md
-required_file::docs/github_data_strategy.md,PASS,docs/github_data_strategy.md
-required_file::docs/repository_readiness_report.md,PASS,docs/repository_readiness_report.md
-required_file::docs/dashboard_environment_inspection.md,PASS,docs/dashboard_environment_inspection.md
-required_file::docs/resume_bullets.md,PASS,docs/resume_bullets.md
-required_file::docs/github_repository_description.md,PASS,docs/github_repository_description.md
-required_file::docs/linkedin_project_description.md,PASS,docs/linkedin_project_description.md
 processed_dataset_not_empty,PASS,rows=180519
 orders_dataset_not_empty,PASS,rows=65752
 fact_orders_dataset_not_empty,PASS,rows=65752
@@ -45,9 +43,20 @@ fact_items_order_count_matches_processed,PASS,"fact_items=180519, processed=1805
 late_rate_valid,PASS,
 cancellation_rate_valid,PASS,
 total_sales_positive,PASS,
+source_orders_matched,PASS,"matched=65752, processed_orders=65752"
+shipping_delay_matches_raw_duration_rule,PASS,mismatches=0
+late_delivery_flag_matches_raw_source,PASS,mismatches=0
 python_sql_kpis_pass,PASS,
 dashboard_validation_pass,PASS,
 repository_readiness_pass,PASS,
+baseline_kpi::total_sales,PASS,"actual=33054402.380216613, expected=33054402.380216613, tolerance=0.05"
+baseline_kpi::total_profit,PASS,"actual=3966902.974050357, expected=3966902.974050357, tolerance=0.05"
+baseline_kpi::profit_margin,PASS,"actual=0.1200113355074478, expected=0.1200113355074478, tolerance=0.0001"
+baseline_kpi::total_orders,PASS,"actual=65752, expected=65752, tolerance=0"
+baseline_kpi::total_order_items,PASS,"actual=180519, expected=180519, tolerance=0"
+baseline_kpi::total_customers,PASS,"actual=20652, expected=20652, tolerance=0"
+baseline_kpi::late_delivery_rate,PASS,"actual=0.5482418785740357, expected=0.5482418785740357, tolerance=0.0001"
+baseline_kpi::average_shipping_delay_days,PASS,"actual=0.5666747779535223, expected=0.5666747779535223, tolerance=0.0001"
 processed_sensitive_columns_removed,PASS,
 powerbi_customer_sensitive_columns_removed,PASS,dim_customers checked
 public_sample_sensitive_columns_removed,PASS,

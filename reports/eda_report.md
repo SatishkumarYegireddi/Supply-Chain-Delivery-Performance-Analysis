@@ -4,7 +4,7 @@
 Across 65,752 distinct orders, the late delivery rate is 54.8% and average shipping delay is 0.6 days.
 
 ## Shipping Mode Performance
-`First Class` has the highest late-delivery rate at 95.3% across 10,079 orders. This indicates that promised service level and actual performance should be reviewed by mode rather than assuming faster modes always perform better.
+`First Class` has the highest late-delivery rate at 95.3% across 10,079 orders. Mode-level performance is therefore worth reading as an observed risk pattern, not as a simple proxy for faster fulfillment.
 
 ## Geographic Performance
 `Europe` has the highest order volume with 18,561 orders. `Pacific Asia` has the highest market-level late delivery rate at 55.3%.
@@ -17,7 +17,7 @@ The highest-sales category is `Fishing` with $6,226,935.3 in net sales and $756,
 A high-sales, low-margin category to review is `Shop By Sport`, with $1,177,185.6 in net sales and a 11.0% profit margin.
 
 ## Time Analysis
-The lowest monthly late delivery rate appears in 2016-07 at 52.4%. The highest monthly late delivery rate appears in 2016-06 at 57.3%.
+Monthly late-delivery rates stay in a fairly narrow band: the lowest month is 2016-07 at 52.4%, while the highest is 2016-06 at 57.3%.
 
 ## Figures
 - `reports/figures/late_delivery_rate_by_shipping_mode.svg`

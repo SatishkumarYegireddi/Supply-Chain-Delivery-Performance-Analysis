@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from .common import ARCHIVE, DASHBOARD_DIR, DOCS_DIR, OUTPUTS_DIR, POWERBI_DATA_DIR, POWERBI_DIR, PROCESSED_DIR, REPORTS_DIR, ROOT, VALIDATION_DIR, md_table, write_text
+from .common import ARCHIVE, DASHBOARD_DIR, DOCS_DIR, OUTPUTS_DIR, POWERBI_DATA_DIR, POWERBI_DIR, PROCESSED_DIR, REPORTS_DIR, ROOT, VALIDATION_DIR, write_text
 
 def repository_file_status(path: Path) -> str:
     rel = path.relative_to(ROOT).as_posix()
@@ -29,7 +29,7 @@ def repository_file_status(path: Path) -> str:
         return "ignored_local_generated_or_sensitive"
     return "repository_intended"
 
-def create_github_data_strategy() -> None:
+def create_repository_checks() -> None:
     for cache_dir in ROOT.rglob("__pycache__"):
         shutil.rmtree(cache_dir, ignore_errors=True)
     for pyc_file in ROOT.rglob("*.pyc"):
@@ -67,79 +67,8 @@ def create_github_data_strategy() -> None:
     )
     checks.to_csv(OUTPUTS_DIR / "repository_readiness_checks.csv", index=False)
 
-    top_files = inventory.head(12).copy()
-    versionable_top = intended.sort_values("size_bytes", ascending=False).head(12).copy()
-    write_text(
-        DOCS_DIR / "github_data_strategy.md",
-        f"""
-        # GitHub Data Strategy
-
-        ## Decision
-        The repository should keep source code, SQL, validation logic, documentation, charts, small summary outputs, Power BI model documentation, and the finished HTML dashboard under version control.
-
-        The repository should not commit raw source extracts, processed full-detail datasets, generated Power BI CSV extracts, the generated SQLite database, Python cache artifacts, or the local `archive.zip`.
-
-        ## Why `archive.zip` Is Ignored
-        The local archive is {ARCHIVE.stat().st_size / 1_048_576:.2f} MiB, which is below GitHub's single-file limit, but it contains the raw source data with customer-identifying fields. Keeping it local avoids publishing raw sensitive fields and avoids duplicating generated extracts. The pipeline remains reproducible when `archive.zip` is present locally at the project root.
-
-        ## GitHub File-Size Constraint
-        GitHub blocks normal pushes containing a single file larger than 100 MiB. The generated processed order-item CSV is {((PROCESSED_DIR / "supply_chain_order_items.csv").stat().st_size / 1_048_576):.2f} MiB and must remain ignored.
-
-        ## Current Largest Local Files
-        {md_table(top_files[["path", "size_mb", "repository_status"]], max_rows=12)}
-
-        ## Largest Repository-Intended Files
-        {md_table(versionable_top[["path", "size_mb", "repository_status"]], max_rows=12)}
-
-        ## Version-Controlled By Design
-        - `src/`, `run_pipeline.py`, and `requirements.txt`
-        - `sql/`
-        - `validation/`
-        - `docs/`, `reports/`, and `reports/figures/`
-        - `powerbi/` documentation, DAX, style guide, and theme files
-        - `dashboard/supply_chain_delivery_dashboard.html`
-        - small summary outputs in `outputs/` and `outputs/sql/`
-
-        ## Ignored Local Or Generated Files
-        - `archive.zip`
-        - `data/raw/`
-        - `data/processed/`
-        - `powerbi/data/`
-        - `outputs/supply_chain.sqlite`
-        - `__pycache__/` and `*.pyc`
-
-        ## Regeneration Commands
-        Place the source archive locally at `archive.zip`, then run:
-
-        ```powershell
-        python run_pipeline.py
-        python validation/run_validation.py
-        ```
-
-        The pipeline regenerates raw extracts, processed CSVs, SQLite outputs, Power BI-ready CSVs, dashboard files, validation outputs, and documentation from the local archive.
-        """,
-    )
-
-    write_text(
-        DOCS_DIR / "repository_readiness_report.md",
-        f"""
-        # Repository Readiness Report
-
-        ## Status
-        Repository readiness checks are generated in `outputs/repository_readiness_checks.csv`.
-
-        {md_table(checks, max_rows=20)}
-
-        ## Sensitive Data Audit
-        Raw data, the local source archive, full processed extracts, and Power BI CSV exports are ignored. Publishable outputs exclude raw customer email, password, street, first-name, and last-name values. The sample-record JSON is sanitized before writing.
-
-        ## Dashboard Artifact
-        The finished dashboard is `dashboard/supply_chain_delivery_dashboard.html` and is intended to be committed because it is small and directly openable in a browser.
-        """,
-    )
-
 def normalize_markdown_files() -> None:
-    markdown_roots = [ROOT / "README.md", ROOT / "PROJECT_STATUS.md", DOCS_DIR, REPORTS_DIR, POWERBI_DIR]
+    markdown_roots = [ROOT / "README.md", DOCS_DIR, REPORTS_DIR, POWERBI_DIR]
     files: list[Path] = []
     for item in markdown_roots:
         if item.is_file() and item.suffix == ".md":
@@ -193,14 +122,12 @@ def create_validation_script() -> None:
             "powerbi/style_guide.md",
             "dashboard/supply_chain_delivery_dashboard.html",
             "README.md",
-            "PROJECT_STATUS.md",
+            "docs/dataset_relevance.md",
+            "docs/data_cleaning_rules.md",
+            "docs/kpi_dictionary.md",
+            "docs/sql_analysis.md",
+            "docs/validation_report.md",
             "docs/filter_propagation_validation.md",
-            "docs/github_data_strategy.md",
-            "docs/repository_readiness_report.md",
-            "docs/dashboard_environment_inspection.md",
-            "docs/resume_bullets.md",
-            "docs/github_repository_description.md",
-            "docs/linkedin_project_description.md",
         ]
 
         def repository_file_status(path: Path) -> str:
@@ -346,6 +273,7 @@ def create_validation_script() -> None:
     )
 
 def final_audit() -> None:
+    create_repository_checks()
     create_validation_script()
     for cache_dir in ROOT.rglob("__pycache__"):
         shutil.rmtree(cache_dir, ignore_errors=True)
